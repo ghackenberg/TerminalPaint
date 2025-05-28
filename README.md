@@ -1,4 +1,4 @@
-# Terminal Paint
+# TerminalPaint
 
 *Coming soon ...*
 
