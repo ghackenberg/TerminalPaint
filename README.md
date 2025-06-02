@@ -1,14 +1,15 @@
 # TerminalPaint
 
-TerminalPaint is a basic paint application running in the terminal.
+**TerminalPaint** is a basic paint application running in the terminal.
 The application features a color picker as well as loading and saving of images.
-The color picker provides access to a small palette of colors supported on a wide range of platforms.
-Image loading and saving uses a custom image format, which is not compatible with other tools.
-Finally, the application is written in C# with .NET Core.
+The color picker provides access to a small palette of colors supported on a wide range of platforms (e.g. Windows, Linux, and MacOS).
+Image loading and saving uses a custom image format, which intentionally is not compatible with other tools.
+The application itself is written in C# with .NET Core.
 
 We use this application for teaching programming at the [School of Engineering](https://fh-ooe.at/en/campus-wels) of the [University of Applied Sciences Upper Austria](https://fh-ooe.at/en).
-The application is simple enough to be fully unterstood, but interesting enough to motivate students.
-Enjoy!
+According to our experience, the application is simple enough to be fully unterstood even by beginners, but interesting enough to motivate students to work on the assigments.
+
+*Enjoy! 😉*
 
 ![](./Screenshots/Flower%20Heart%20with%20Textbars.png)
 
