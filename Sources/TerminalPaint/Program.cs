@@ -1,14 +1,8 @@
-﻿using System.Drawing;
-
-namespace TerminalPaint
+﻿namespace TerminalPaint
 {
     internal class Program
     {
-        static void Main(string[] args)
-        {
-            // Initialize colors
-
-            ConsoleColor[] colors = 
+        static readonly ConsoleColor[] colors =
             {
                 ConsoleColor.Red,
                 ConsoleColor.DarkRed,
@@ -28,45 +22,130 @@ namespace TerminalPaint
                 ConsoleColor.Black
             };
 
-            int previousColor = 0;
+        static readonly int borderTop = 2;
+        static readonly int borderLeft = 2;
+        static readonly int borderRight = 6;
+        static readonly int borderBottom = 2;
 
-            int currentColor = 0;
+        static int imageWidth = Console.WindowWidth - borderLeft - borderRight;
+        static int imageHeight = Console.WindowHeight - borderTop - borderBottom;
+        static int imageSize = imageWidth * imageHeight;
 
-            // Initialize borders
+        static ConsoleColor[] imageData = new ConsoleColor[imageSize];
 
-            int borderTop = 3;
-            int borderLeft = 2;
-            int borderRight = 6;
-            int borderBottom = 3;
+        static int previousColor = 0;
+        static int currentColor = 0;
 
-            // Initialize image width / height and data
+        static int previousPointerX = imageWidth / 2;
+        static int previousPointerY = imageHeight / 2;
+        static int currentPointerX = imageWidth / 2;
+        static int currentPointerY = imageHeight / 2;
 
-            int imageWidth = Console.WindowWidth - borderLeft - borderRight;
-            int imageHeight = Console.WindowHeight - borderTop - borderBottom;
-
-            int pixelCount = imageWidth * imageHeight;
-
-            ConsoleColor[] imageData = new ConsoleColor[pixelCount];
-
-            for (int pixel = 0; pixel < pixelCount; pixel++)
+        static void Main(string[] args)
+        {
+            // Initialize image data
+            for (int pixel = 0; pixel < imageSize; pixel++)
             {
                 imageData[pixel] = ConsoleColor.Black;
             }
 
-            // Initialize previous and current pointer location
-
-            int previousX = 0;
-            int previousY = 0;
-
-            int currentX = imageWidth / 2;
-            int currentY = imageHeight / 2;
-
             // Make blank screen (and set cursor position to top-left)
+            Console.Clear();
+
+            // Update GUI
+            PaintFrame();
+            PaintColor();
+            PaintImage();
+
+            // Enter main loop (repaint + read and process user input)
+            do
+            {
+                // Wait for and process user input
+                ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+
+                if (keyInfo.Key == ConsoleKey.LeftArrow)
+                {
+                    if (currentPointerX > 0)
+                    {
+                        currentPointerX--;
+                        UpdateImage();
+                    }
+                }
+                else if (keyInfo.Key == ConsoleKey.RightArrow)
+                {
+                    if (currentPointerX < imageWidth - 1)
+                    {
+                        currentPointerX++;
+                        UpdateImage();
+                    }
+                }
+                else if (keyInfo.Key == ConsoleKey.UpArrow)
+                {
+                    if (currentPointerY > 0)
+                    {
+                        currentPointerY--;
+                        UpdateImage();
+                    }
+                }
+                else if (keyInfo.Key == ConsoleKey.DownArrow)
+                {
+                    if (currentPointerY < imageHeight - 1)
+                    {
+                        currentPointerY++;
+                        UpdateImage();
+                    }
+                }
+                else if (keyInfo.Key == ConsoleKey.PageUp)
+                {
+                    if (currentColor > 0)
+                    {
+                        currentColor--;
+                        UpdateColor();
+                    }
+                }
+                else if (keyInfo.Key == ConsoleKey.PageDown)
+                {
+                    if (currentColor < colors.Length - 1)
+                    {
+                        currentColor++;
+                        UpdateColor();
+                    }
+                }
+                else if (keyInfo.Key == ConsoleKey.Spacebar)
+                {
+                    imageData[currentPointerY * imageWidth + currentPointerX] = colors[currentColor];
+                    UpdateImage();
+                }
+                else if (keyInfo.Key == ConsoleKey.S)
+                {
+                    SaveImage();
+                }
+                else if (keyInfo.Key == ConsoleKey.L)
+                {
+                    LoadImage();
+                }
+                else if (keyInfo.Key == ConsoleKey.C)
+                {
+                    ClearImage();
+                }
+                else if (keyInfo.Key == ConsoleKey.Escape)
+                {
+                    break;
+                }
+            }
+            while (true);
+
+            // Say goodbye
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
 
             Console.Clear();
 
-            // Paint frame (i.e. top, left, right, bottom borders)
+            Console.WriteLine("Good bye!");
+        }
 
+        static void PaintFrame()
+        {
             Console.BackgroundColor = ConsoleColor.White;
             Console.ForegroundColor = ConsoleColor.Black;
 
@@ -108,9 +187,10 @@ namespace TerminalPaint
 
             Console.SetCursorPosition(1, Console.WindowHeight - 1);
             Console.Write("(c) 2025 Dr. Georg Hackenberg, Professor for Industrial Informatics, School of Engineering, FH Upper Austria");
+        }
 
-            // Paint colors
-
+        static void PaintColor()
+        {
             for (int color = 0; color < colors.Length; color++)
             {
                 int colorX = Console.WindowWidth - 3;
@@ -122,128 +202,165 @@ namespace TerminalPaint
                     Console.ForegroundColor = ConsoleColor.White;
 
                     Console.SetCursorPosition(colorX, colorY);
-                    Console.Write(color == currentColor ? 'X' : ' ');
+                    if (color == currentColor)
+                    {
+                        Console.Write('X');
+                    }
+                    else
+                    {
+                        Console.Write(' ');
+                    }
                 }
             }
+        }
 
-            // Enter main loop (repaint + read and process user input)
+        static void UpdateColor()
+        {
+            // Repaint previous color
 
-            do
+            int previousColorX = Console.WindowWidth - 3;
+            int previousColorY = 2 + previousColor * 2;
+
+            if (previousColorY < Console.WindowHeight - 1)
             {
-                // Repaint previous color
-
-                int previousColorX = Console.WindowWidth - 3;
-                int previousColorY = 2 + previousColor * 2;
-
-                if (previousColorY < Console.WindowHeight - 1)
-                {
-                    Console.BackgroundColor = colors[previousColor];
-                    Console.ForegroundColor = ConsoleColor.White;
-
-                    Console.SetCursorPosition(previousColorX, previousColorY);
-                    Console.Write(' ');
-                }
-
-                // Repaint current color
-
-                int currentColorX = Console.WindowWidth - 3;
-                int currentColorY = 2 + currentColor * 2;
-
-                if (currentColorY < Console.WindowHeight - 1)
-                {
-                    Console.BackgroundColor = colors[currentColor];
-                    Console.ForegroundColor = ConsoleColor.White;
-
-                    Console.SetCursorPosition(currentColorX, currentColorY);
-                    Console.Write('X');
-                }
-
-                // Repaint previous pointer location
-
-                Console.BackgroundColor = imageData[previousY * imageWidth + previousX];
+                Console.BackgroundColor = colors[previousColor];
                 Console.ForegroundColor = ConsoleColor.White;
 
-                Console.SetCursorPosition(borderLeft + previousX, borderTop + previousY);
+                Console.SetCursorPosition(previousColorX, previousColorY);
                 Console.Write(' ');
+            }
 
-                // Repaint current pointer location
+            // Repaint current color
 
-                Console.BackgroundColor = imageData[currentY * imageWidth + currentX];
+            int currentColorX = Console.WindowWidth - 3;
+            int currentColorY = 2 + currentColor * 2;
+
+            if (currentColorY < Console.WindowHeight - 1)
+            {
+                Console.BackgroundColor = colors[currentColor];
                 Console.ForegroundColor = ConsoleColor.White;
 
-                Console.SetCursorPosition(borderLeft + currentX, borderTop + currentY);
+                Console.SetCursorPosition(currentColorX, currentColorY);
                 Console.Write('X');
+            }
 
-                // Update previous color
+            // Update previous color
 
-                previousColor = currentColor;
+            previousColor = currentColor;
+        }
 
-                // Update previous pointer location
-
-                previousX = currentX;
-                previousY = currentY;
-
-                // Wait for and process user input
-
-                ConsoleKeyInfo keyInfo = Console.ReadKey(true);
-
-                if (keyInfo.Key == ConsoleKey.LeftArrow)
+        static void PaintImage()
+        {
+            for (int pixelX = 0; pixelX < imageWidth; pixelX++)
+            {
+                for (int pixelY = 0; pixelY < imageHeight; pixelY++)
                 {
-                    if (currentX > 0)
+                    Console.BackgroundColor = imageData[pixelY * imageWidth + pixelX];
+                    Console.ForegroundColor = ConsoleColor.White;
+
+                    Console.SetCursorPosition(borderLeft + pixelX, borderTop + pixelY);
+                    if (currentPointerX == pixelX && currentPointerY == pixelY)
                     {
-                        currentX--;
+                        Console.Write('X');
                     }
-                }
-                else if (keyInfo.Key == ConsoleKey.RightArrow)
-                {
-                    if (currentX < imageWidth - 1)
+                    else
                     {
-                        currentX++;
+                        Console.Write(' ');
                     }
-                }
-                else if (keyInfo.Key == ConsoleKey.UpArrow)
-                {
-                    if (currentY > 0)
-                    {
-                        currentY--;
-                    }
-                }
-                else if (keyInfo.Key == ConsoleKey.DownArrow)
-                {
-                    if (currentY < imageHeight - 1)
-                    {
-                        currentY++;
-                    }
-                }
-                else if (keyInfo.Key == ConsoleKey.PageUp)
-                {
-                    if (currentColor > 0)
-                    {
-                        currentColor--;
-                    }
-                }
-                else if (keyInfo.Key == ConsoleKey.PageDown)
-                {
-                    if (currentColor < colors.Length - 1)
-                    {
-                        currentColor++;
-                    }
-                }
-                else if (keyInfo.Key == ConsoleKey.Spacebar)
-                {
-                    imageData[currentY * imageWidth + currentX] = colors[currentColor];
-                }
-                else if (keyInfo.Key == ConsoleKey.Escape)
-                {
-                    break;
                 }
             }
-            while (true);
 
-            // Say goodbye
+            Console.SetCursorPosition(borderLeft + currentPointerX + 1, borderTop + currentPointerY);
+        }
 
-            Console.Clear();
-            Console.WriteLine("Good bye!");
+        static void UpdateImage()
+        {
+            // Repaint previous pointer location
+
+            Console.BackgroundColor = imageData[previousPointerY * imageWidth + previousPointerX];
+            Console.ForegroundColor = ConsoleColor.White;
+
+            Console.SetCursorPosition(borderLeft + previousPointerX, borderTop + previousPointerY);
+            Console.Write(' ');
+
+            // Repaint current pointer location
+
+            Console.BackgroundColor = imageData[currentPointerY * imageWidth + currentPointerX];
+            Console.ForegroundColor = ConsoleColor.White;
+
+            Console.SetCursorPosition(borderLeft + currentPointerX, borderTop + currentPointerY);
+            Console.Write('X');
+
+            // Update previous pointer location
+
+            previousPointerX = currentPointerX;
+            previousPointerY = currentPointerY;
+        }
+
+        static void SaveImage()
+        {
+            // TODO let the user choose the file name
+            string fileName = "image.tpi";
+
+            // TODO check if file already exists and ask for overwrite
+
+            // Create file and open with write access
+            FileStream stream = new FileStream(fileName, FileMode.Create, FileAccess.Write);
+
+            // Write image width and height to file
+            stream.WriteByte((byte)imageWidth);
+            stream.WriteByte((byte)imageHeight);
+
+            // Write pixel colors to file
+            for (int pixel = 0; pixel < imageSize; pixel++)
+            {
+                stream.WriteByte((byte)imageData[pixel]);
+            }
+
+            // Close file stream
+            stream.Close();
+        }
+
+        static void LoadImage()
+        {
+            // TODO Read file name from user input
+            string fileName = "image.tpi";
+
+            // TODO Check if file exists
+
+            // Open file stream
+            FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+
+            // Read image width and height
+            imageWidth = stream.ReadByte();
+            imageHeight = stream.ReadByte();
+
+            // Recompute pixel count
+            imageSize = imageWidth * imageHeight;
+
+            // Read image data
+            imageData = new ConsoleColor[imageSize];
+            for (int pixel = 0; pixel < imageSize; pixel++)
+            {
+                imageData[pixel] = (ConsoleColor)stream.ReadByte();
+            }
+
+            // Repaint entire image
+            PaintImage();
+
+            // Close file stream
+            stream.Close();
+        }
+
+        static void ClearImage()
+        {
+            imageData = new ConsoleColor[imageSize];
+            for (int pixel = 0; pixel < imageSize; pixel++)
+            {
+                imageData[pixel] = ConsoleColor.Black;
+            }
+
+            PaintImage();
         }
     }
 }
