@@ -146,29 +146,50 @@
 
         static void PaintFrame()
         {
+            // Paint borders
+
+            PaintBorderTop();
+            PaintBorderLeft();
+            PaintBorderRight();
+            PaintBorderBottom();
+
+            // Paint text
+
+            PaintTextTop();
+            PaintTextBottom();
+        }
+
+        static void PaintBorderTop()
+        {
             Console.BackgroundColor = ConsoleColor.White;
             Console.ForegroundColor = ConsoleColor.Black;
 
             for (int column = 0; column < Console.WindowWidth; column++)
             {
-                // Top border 1
-
                 Console.SetCursorPosition(column, 0);
                 Console.Write(' ');
-
-                // Bottom border 2
-
-                Console.SetCursorPosition(column, Console.WindowHeight - 1);
-                Console.Write(' ');
             }
+        }
+
+        static void PaintBorderLeft()
+        {
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Black;
 
             for (int row = 0; row < Console.WindowHeight; row++)
             {
-                // Left border
-
                 Console.SetCursorPosition(0, row);
                 Console.Write(' ');
+            }
+        }
 
+        static void PaintBorderRight()
+        {
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Black;
+
+            for (int row = 0; row < Console.WindowHeight; row++)
+            {
                 // Right border 1
 
                 Console.SetCursorPosition(Console.WindowWidth - 5, row);
@@ -179,14 +200,36 @@
                 Console.SetCursorPosition(Console.WindowWidth - 1, row);
                 Console.Write(' ');
             }
+        }
 
-            // Paint text
+        static void PaintBorderBottom()
+        {
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Black;
+
+            for (int column = 0; column < Console.WindowWidth; column++)
+            {
+                Console.SetCursorPosition(column, Console.WindowHeight - 1);
+                Console.Write(' ');
+            }
+        }
+
+        static void PaintTextTop()
+        {
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Black;
 
             Console.SetCursorPosition(1, 0);
-            Console.Write("TerminalPaint v0.0.1 | Pointer = Arrow Up/Down/Left/Right, Color = Page Up/Down, Paint = Space, Close = Escape");
+            Console.Write("TerminalPaint v0.0.1 | Pointer = Arrow Up/Down/Left/Right, Color = Page Up/Down, Paint = Space");
+        }
+
+        static void PaintTextBottom()
+        {
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Black;
 
             Console.SetCursorPosition(1, Console.WindowHeight - 1);
-            Console.Write("(c) 2025 Dr. Georg Hackenberg, Professor for Industrial Informatics, School of Engineering, FH Upper Austria");
+            Console.Write("(c) 2025 Dr. Georg Hackenberg <georg.hackenberg@fh-wels.at> | Load = L, Save = S, Clear = C, Close = Escape");
         }
 
         static void PaintColor()
@@ -299,68 +342,221 @@
 
         static void SaveImage()
         {
-            // TODO let the user choose the file name
-            string fileName = "image.tpi";
+            // Let the user choose the file name
+            string? fileName = ReadFileName(false);
 
-            // TODO check if file already exists and ask for overwrite
-
-            // Create file and open with write access
-            FileStream stream = new FileStream(fileName, FileMode.Create, FileAccess.Write);
-
-            // Write image width and height to file
-            stream.WriteByte((byte)imageWidth);
-            stream.WriteByte((byte)imageHeight);
-
-            // Write pixel colors to file
-            for (int pixel = 0; pixel < imageSize; pixel++)
+            // Check if file name has been entered
+            if (fileName != null)
             {
-                stream.WriteByte((byte)imageData[pixel]);
-            }
+                // Create file and open with write access
+                FileStream stream = new FileStream(fileName, FileMode.Create, FileAccess.Write);
 
-            // Close file stream
-            stream.Close();
+                // Write image width and height to file
+                stream.WriteByte((byte)imageWidth);
+                stream.WriteByte((byte)imageHeight);
+
+                // Write pixel colors to file
+                for (int pixel = 0; pixel < imageSize; pixel++)
+                {
+                    stream.WriteByte((byte)imageData[pixel]);
+                }
+
+                // Close file stream
+                stream.Close();
+            }
         }
 
         static void LoadImage()
         {
-            // TODO Read file name from user input
-            string fileName = "image.tpi";
+            // Read file name from user input
+            string? fileName = ReadFileName(true);
 
-            // TODO Check if file exists
-
-            // Open file stream
-            FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
-
-            // Read image width and height
-            imageWidth = stream.ReadByte();
-            imageHeight = stream.ReadByte();
-
-            // Recompute pixel count
-            imageSize = imageWidth * imageHeight;
-
-            // Read image data
-            imageData = new ConsoleColor[imageSize];
-            for (int pixel = 0; pixel < imageSize; pixel++)
+            // Check if file name has been entered
+            if (fileName != null)
             {
-                imageData[pixel] = (ConsoleColor)stream.ReadByte();
+                // Open file stream
+                FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+
+                // Read image width and height
+                imageWidth = stream.ReadByte();
+                imageHeight = stream.ReadByte();
+
+                // Recompute pixel count
+                imageSize = imageWidth * imageHeight;
+
+                // Read image data
+                imageData = new ConsoleColor[imageSize];
+                for (int pixel = 0; pixel < imageSize; pixel++)
+                {
+                    imageData[pixel] = (ConsoleColor)stream.ReadByte();
+                }
+
+                // Repaint entire image
+                PaintImage();
+
+                // Close file stream
+                stream.Close();
             }
-
-            // Repaint entire image
-            PaintImage();
-
-            // Close file stream
-            stream.Close();
         }
 
         static void ClearImage()
         {
-            imageData = new ConsoleColor[imageSize];
-            for (int pixel = 0; pixel < imageSize; pixel++)
+            PaintBorderBottom();
+
+            Console.SetCursorPosition(1, Console.WindowHeight - 1);
+            Console.Write("Are you sure? (Y|N|Escape) ");
+
+            bool? sure = ReadBool();
+
+            if (sure != null && sure == true)
             {
-                imageData[pixel] = ConsoleColor.Black;
+                imageData = new ConsoleColor[imageSize];
+                for (int pixel = 0; pixel < imageSize; pixel++)
+                {
+                    imageData[pixel] = ConsoleColor.Black;
+                }
+
+                PaintImage();
             }
 
-            PaintImage();
+            PaintBorderBottom();
+            PaintTextBottom();
+
+            Console.SetCursorPosition(borderLeft + currentPointerX + 1, borderTop + currentPointerY);
+        }
+
+        static string? ReadFileName(bool exists)
+        {
+            PaintBorderBottom();
+
+            Console.SetCursorPosition(1, Console.WindowHeight - 1);
+            Console.Write("Please enter file name (Char|Enter|Escape): ");
+
+            string? fileName = "";
+
+            do
+            {
+                ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+
+                if (!Char.IsControl(keyInfo.KeyChar))
+                {
+                    fileName = fileName + keyInfo.KeyChar;
+
+                    Console.Write(keyInfo.KeyChar);
+                }
+                else if (keyInfo.Key == ConsoleKey.Backspace)
+                {
+                    if (fileName.Length > 0)
+                    {
+                        fileName = fileName.Substring(0, fileName.Length - 1);
+
+                        Console.CursorLeft--;
+                        Console.Write(' ');
+                        Console.CursorLeft--;
+                    }
+                }
+                else if (keyInfo.Key == ConsoleKey.Escape)
+                {
+                    fileName = null;
+
+                    break;
+                }
+                else if (keyInfo.Key == ConsoleKey.Enter)
+                {
+                    if (exists)
+                    {
+                        if (File.Exists(fileName))
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            PaintBorderBottom();
+
+                            Console.SetCursorPosition(1, Console.WindowHeight - 1);
+
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write("File does not exist! ");
+
+                            Console.ForegroundColor = ConsoleColor.Black;
+                            Console.Write("Please enter file name (Char|Enter|Escape): ");
+
+                            fileName = "";
+                        }
+                    }
+                    else
+                    {
+                        if (File.Exists(fileName))
+                        {
+                            PaintBorderBottom();
+
+                            Console.SetCursorPosition(1, Console.WindowHeight - 1);
+
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write("File already exists! ");
+
+                            Console.ForegroundColor = ConsoleColor.Black;
+                            Console.Write("Overwrite? (Y|N|Escape) ");
+
+                            bool? overwrite = ReadBool();
+
+                            if (overwrite == null)
+                            {
+                                fileName = null;
+
+                                break;
+                            }
+                            else if (overwrite == false)
+                            {
+                                PaintBorderBottom();
+
+                                Console.SetCursorPosition(1, Console.WindowHeight - 1);
+                                Console.Write("Please enter file name (Char|Enter|Escape): ");
+
+                                fileName = "";
+                            }
+                            else if (overwrite == true)
+                            {
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            while (true);
+
+            PaintBorderBottom();
+            PaintTextBottom();
+
+            Console.SetCursorPosition(borderLeft + currentPointerX + 1, borderTop + currentPointerY);
+
+            return fileName;
+        }
+
+        static bool? ReadBool()
+        {
+            do
+            {
+                ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+
+                if (keyInfo.Key == ConsoleKey.Y)
+                {
+                    return true;
+                }
+                else if (keyInfo.Key == ConsoleKey.N)
+                {
+                    return false;
+                }
+                else if (keyInfo.Key == ConsoleKey.Escape)
+                {
+                    return null;
+                }
+            }
+            while (true);
         }
     }
 }
