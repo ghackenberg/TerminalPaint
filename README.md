@@ -11,7 +11,33 @@ According to our experience, the application is simple enough to be fully unters
 
 *Enjoy! 😉*
 
+![](./Screencasts/Rectangles%20and%20Fill.gif#)
+
+## Screenshots
+
+Here are some screenshots of the application.
+The screenshots also document the evolution of the software.
+Originally, we had only basic drawing features.
+Later we added colors and help text.
+And so the application evolved...
+
+### Flower Heart
+
+In this **third version**, we added help text to the software in the top and the bottom borders.
+
 ![](./Screenshots/Flower%20Heart%20with%20Textbars.png)
+
+### Rocket
+
+In this **second version** of the software, we added a color palette and selector at the right corner.
+
+![](./Screenshots/Rocket%20with%20Color%20Picker.png)
+
+### Man with Hat
+
+In this **first version**, only basic drawing capabilities were available solely with red color pixels.
+
+![](./Screenshots/Man%20with%20Hat.png)
 
 ## Lessons
 
