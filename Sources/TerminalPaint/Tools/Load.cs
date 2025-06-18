@@ -13,6 +13,7 @@
                 // Open file stream
                 FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
 
+                // Read image from file
                 Image.width = stream.ReadByte();
                 Image.height = stream.ReadByte();
                 Image.size = Image.width * Image.height;
@@ -21,10 +22,12 @@
                 {
                     Image.data[pixel] = (ConsoleColor)stream.ReadByte();
                 }
-                Image.Paint();
 
                 // Close file stream
                 stream.Close();
+
+                // Paint image on screen
+                Image.Paint();
             }
         }
     }
