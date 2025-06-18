@@ -386,7 +386,7 @@
             int startX = currentPointerX;
             int startY = currentPointerY; ;
 
-            Console.BackgroundColor = colors[currentColor];
+            Console.BackgroundColor = imageData[startY * imageWidth + startX];
             Console.ForegroundColor = ConsoleColor.White;
 
             Console.SetCursorPosition(startX + borderLeft, startY + borderTop);
@@ -430,10 +430,83 @@
                 }
                 else if (keyInfo.Key == ConsoleKey.Enter)
                 {
+                    int minX = Math.Min(startX, currentPointerX);
+                    int maxX = Math.Max(startX, currentPointerX);
+
+                    int minY = Math.Min(startY, currentPointerY);
+                    int maxY = Math.Max(startY, currentPointerY);
+
+                    // Rectangle
+
+                    Console.BackgroundColor = colors[currentColor];
+
+                    for (int y = minY; y <= maxY; y++)
+                    {
+                        Console.SetCursorPosition(borderLeft + minX, borderTop + y);
+
+                        for (int x = minX; x <= maxX; x++)
+                        {
+                            imageData[y * imageWidth + x] = colors[currentColor];
+
+                            Console.Write(' ');
+                        }
+                    }
+
+                    // Current pointer
+
+                    Console.BackgroundColor = imageData[currentPointerY * imageWidth + currentPointerX];
+                    Console.SetCursorPosition(borderLeft + currentPointerX, borderTop + currentPointerY);
+                    Console.Write('X');
+
                     return;
                 }
                 else if (keyInfo.Key == ConsoleKey.Escape)
                 {
+                    int minX = Math.Min(startX, currentPointerX);
+                    int maxX = Math.Max(startX, currentPointerX);
+
+                    int minY = Math.Min(startY, currentPointerY);
+                    int maxY = Math.Max(startY, currentPointerY);
+
+                    // Top row
+
+                    Console.SetCursorPosition(borderLeft + minX, borderTop + minY);
+
+                    for (int x = minX; x <= maxX; x++)
+                    {
+                        Console.BackgroundColor = imageData[minY * imageWidth + x];
+                        Console.Write(' ');
+                    }
+
+                    // Intermediate rows
+
+                    for (int y = minY + 1; y <= maxY - 1; y++)
+                    {
+                        Console.BackgroundColor = imageData[y * imageWidth + minX];
+                        Console.SetCursorPosition(borderLeft + minX, borderTop + y);
+                        Console.Write(' ');
+
+                        Console.BackgroundColor = imageData[y * imageWidth + maxX];
+                        Console.SetCursorPosition(borderLeft + maxX, borderTop + y);
+                        Console.Write(' ');
+                    }
+
+                    // Bottom row
+
+                    Console.SetCursorPosition(borderLeft + minX, borderTop + maxY);
+
+                    for (int x = minX; x <= maxX; x++)
+                    {
+                        Console.BackgroundColor = imageData[maxY * imageWidth + x];
+                        Console.Write(' ');
+                    }
+
+                    // Current pointer
+
+                    Console.BackgroundColor = imageData[currentPointerY * imageWidth + currentPointerX];
+                    Console.SetCursorPosition(borderLeft + currentPointerX, borderTop + currentPointerY);
+                    Console.Write('X');
+
                     return;
                 }
             }
@@ -442,59 +515,59 @@
 
         static void MoveRectanglePointer(int startX, int startY)
         {
+            int minX = Math.Min(startX, currentPointerX);
+            int maxX = Math.Max(startX, currentPointerX);
+
+            int minY = Math.Min(startY, currentPointerY);
+            int maxY = Math.Max(startY, currentPointerY);
+
             if (previousPointerX != currentPointerX)
             {
-                if (previousPointerX < startX)
+                if (previousPointerX < currentPointerX)
                 {
-                    if (previousPointerX < currentPointerX)
+                    if (previousPointerX != startX)
                     {
-                        for (int y = Math.Min(startY, currentPointerY); y <= Math.Max(startY, currentPointerY); y++)
+                        for (int y = minY; y <= maxY; y++)
                         {
-                            Console.SetCursorPosition(borderLeft + previousPointerX, borderTop + y);
-
                             Console.BackgroundColor = imageData[y * imageWidth + previousPointerX];
-                            Console.Write(' ');
-                            Console.BackgroundColor = colors[currentColor];
-                            Console.Write('X');
+
+                            Console.SetCursorPosition(borderLeft + previousPointerX, borderTop + y);
+                            Console.Write(previousPointerX > startX && (y == minY || y == maxY) ? '-' : ' ');
                         }
                     }
-                    else
-                    {
-                        for (int y = Math.Min(startY, currentPointerY); y <= Math.Max(startY, currentPointerY); y++)
-                        {
-                            Console.SetCursorPosition(borderLeft + currentPointerX, borderTop + y);
 
-                            Console.BackgroundColor = colors[currentColor];
-                            Console.Write('X');
-                            Console.Write(y == startY || y == currentPointerY ? 'X' : ' ');
+                    if (currentPointerX != startX)
+                    {
+                        for (int y = minY; y <= maxY; y++)
+                        {
+                            Console.BackgroundColor = imageData[y * imageWidth + currentPointerX];
+
+                            Console.SetCursorPosition(borderLeft + currentPointerX, borderTop + y);
+                            Console.Write('|');
                         }
                     }
                 }
-
-                if (previousPointerX > startX)
+                else
                 {
-                    if (previousPointerX > currentPointerX)
+                    if (currentPointerX != startX)
                     {
-                        for (int y = Math.Min(startY, currentPointerY); y <= Math.Max(startY, currentPointerY); y++)
+                        for (int y = minY; y <= maxY; y++)
                         {
+                            Console.BackgroundColor = imageData[y * imageWidth + currentPointerX];
+
                             Console.SetCursorPosition(borderLeft + currentPointerX, borderTop + y);
-
-                            Console.BackgroundColor = colors[currentColor];
-                            Console.Write('X');
-
-                            Console.BackgroundColor = imageData[y * imageWidth + previousPointerX];
-                            Console.Write(' ');
+                            Console.Write('|');
                         }
                     }
-                    else
+
+                    if (previousPointerX != startX)
                     {
-                        for (int y = Math.Min(startY, currentPointerY); y <= Math.Max(startY, currentPointerY); y++)
+                        for (int y = minY; y <= maxY; y++)
                         {
                             Console.SetCursorPosition(borderLeft + previousPointerX, borderTop + y);
 
-                            Console.BackgroundColor = colors[currentColor];
-                            Console.Write(y == startY || y == currentPointerY ? 'X' : ' ');
-                            Console.Write('X');
+                            Console.BackgroundColor = imageData[y * imageWidth + previousPointerX];
+                            Console.Write(previousPointerX < startX && (y == minY || y == maxY) ? '-' : ' ');
                         }
                     }
                 }
@@ -502,86 +575,78 @@
 
             if (previousPointerY != currentPointerY)
             {
-                if (previousPointerY < startY)
+                if (previousPointerY < currentPointerY)
                 {
-                    if (previousPointerY < currentPointerY)
+                    if (previousPointerY != startY)
                     {
-                        Console.SetCursorPosition(borderLeft + Math.Min(startX, currentPointerX), borderTop + previousPointerY);
+                        Console.SetCursorPosition(borderLeft + minX, borderTop + previousPointerY);
 
-                        for (int x = Math.Min(startX, currentPointerX); x <= Math.Max(startX, currentPointerX); x++)
+                        for (int x = minX; x <= maxX; x++)
                         {
                             Console.BackgroundColor = imageData[previousPointerY * imageWidth + x];
-                            Console.Write(' ');
-                        }
-
-                        Console.SetCursorPosition(borderLeft + Math.Min(startX, currentPointerX), borderTop + currentPointerY);
-
-                        for (int x = Math.Min(startX, currentPointerX); x <= Math.Max(startX, currentPointerX); x++)
-                        {
-                            Console.BackgroundColor = colors[currentColor];
-                            Console.Write('X');
+                            Console.Write(previousPointerY > startY && (x == minX || x == maxX) ? '|' : ' ');
                         }
                     }
-                    else
+                    if (currentPointerY != startY)
                     {
-                        Console.BackgroundColor = colors[currentColor];
+                        Console.SetCursorPosition(borderLeft + minX, borderTop + currentPointerY);
 
-                        Console.SetCursorPosition(borderLeft + Math.Min(startX, currentPointerX), borderTop + currentPointerY);
-
-                        for (int x = Math.Min(startX, currentPointerX); x <= Math.Max(startX, currentPointerX); x++)
+                        for (int x = minX; x <= maxX; x++)
                         {
-                            Console.Write('X');
-                        }
-
-                        Console.SetCursorPosition(borderLeft + Math.Min(startX, currentPointerX), borderTop + previousPointerY);
-
-                        for (int x = Math.Min(startX, currentPointerX); x <= Math.Max(startX, currentPointerX); x++)
-                        {
-                            Console.Write(x == startX || x == currentPointerX ? 'X' : ' ');
+                            Console.BackgroundColor = imageData[currentPointerY * imageWidth + x];
+                            Console.Write('-');
                         }
                     }
                 }
-
-                if (previousPointerY > startY)
+                else
                 {
-                    if (previousPointerY > currentPointerY)
+                    if (currentPointerY != startY)
                     {
-                        Console.SetCursorPosition(borderLeft + Math.Min(startX, currentPointerX), borderTop + currentPointerY);
+                        Console.SetCursorPosition(borderLeft + minX, borderTop + currentPointerY);
 
-                        for (int x = Math.Min(startX, currentPointerX); x <= Math.Max(startX, currentPointerX); x++)
+                        for (int x = minX; x <= maxX; x++)
                         {
-                            Console.BackgroundColor = colors[currentColor];
-                            Console.Write('X');
-                        }
-
-                        Console.SetCursorPosition(borderLeft + Math.Min(startX, currentPointerX), borderTop + previousPointerY);
-
-                        for (int x = Math.Min(startX, currentPointerX); x <= Math.Max(startX, currentPointerX); x++)
-                        {
-                            Console.BackgroundColor = imageData[previousPointerY * imageWidth + x];
-                            Console.Write(' ');
+                            Console.BackgroundColor = imageData[currentPointerY * imageWidth + x];
+                            Console.Write('-');
                         }
                     }
-                    else
+
+                    if (previousPointerY != startY)
                     {
-                        Console.BackgroundColor = colors[currentColor];
+                        Console.SetCursorPosition(borderLeft + minX, borderTop + previousPointerY);
 
-                        Console.SetCursorPosition(borderLeft + Math.Min(startX, currentPointerX), borderTop + previousPointerY);
-
-                        for (int x = Math.Min(startX, currentPointerX); x <= Math.Max(startX, currentPointerX); x++)
+                        for (int x = minX; x <= maxX; x++)
                         {
-                            Console.Write(x == startX || x == currentPointerX ? 'X' : ' ');
-                        }
-
-                        Console.SetCursorPosition(borderLeft + Math.Min(startX, currentPointerX), borderTop + currentPointerY);
-
-                        for (int x = Math.Min(startX, currentPointerX); x <= Math.Max(startX, currentPointerX); x++)
-                        {
-                            Console.Write('X');
+                            Console.BackgroundColor = imageData[previousPointerY * imageWidth + x];
+                            Console.Write(previousPointerY < startY && (x == minX || x == maxX) ? '|' : ' ');
                         }
                     }
                 }
             }
+
+            // Other corners
+
+            Console.BackgroundColor = imageData[startY * imageWidth + currentPointerX];
+            Console.SetCursorPosition(borderLeft + currentPointerX, borderTop + startY);
+            Console.Write('+');
+
+            Console.BackgroundColor = imageData[currentPointerY * imageWidth + startX];
+            Console.SetCursorPosition(borderLeft + startX, borderTop + currentPointerY);
+            Console.Write('+');
+
+            // Start corner
+
+            Console.BackgroundColor = imageData[startY * imageWidth + startX];
+            Console.SetCursorPosition(borderLeft + startX, borderTop + startY);
+            Console.Write('O');
+
+            // Current pointer
+
+            Console.BackgroundColor = imageData[currentPointerY * imageWidth + currentPointerX];
+            Console.SetCursorPosition(borderLeft + currentPointerX, borderTop + currentPointerY);
+            Console.Write('X');
+
+            // Update previous pointer location
 
             previousPointerX = currentPointerX;
             previousPointerY = currentPointerY;
