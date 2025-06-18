@@ -383,8 +383,17 @@
 
         static void DrawRectangle()
         {
+            PaintBorderTop();
+            PaintBorderBottom();
+
+            Console.SetCursorPosition(1, 0);
+            Console.Write("TerminalPaint | Pointer = Arrow Up/Down/Left/Right, Paint = Enter");
+
+            Console.SetCursorPosition(1, Console.WindowHeight - 1);
+            Console.Write("(c) 2025 Dr. Georg Hackenberg <georg.hackenberg@fh-wels.at> | Cancel = Escape");
+
             int startX = currentPointerX;
-            int startY = currentPointerY; ;
+            int startY = currentPointerY;
 
             Console.BackgroundColor = imageData[startY * imageWidth + startX];
             Console.ForegroundColor = ConsoleColor.White;
@@ -452,9 +461,18 @@
                         }
                     }
 
+                    // Top and bottom borders and text
+                    PaintBorderTop();
+                    PaintTextTop();
+
+                    PaintBorderBottom();
+                    PaintTextBottom();
+
                     // Current pointer
 
                     Console.BackgroundColor = imageData[currentPointerY * imageWidth + currentPointerX];
+                    Console.ForegroundColor = ConsoleColor.White;
+
                     Console.SetCursorPosition(borderLeft + currentPointerX, borderTop + currentPointerY);
                     Console.Write('X');
 
@@ -501,9 +519,18 @@
                         Console.Write(' ');
                     }
 
+                    // Top and bottom borders and text
+                    PaintBorderTop();
+                    PaintTextTop();
+
+                    PaintBorderBottom();
+                    PaintTextBottom();
+
                     // Current pointer
 
                     Console.BackgroundColor = imageData[currentPointerY * imageWidth + currentPointerX];
+                    Console.ForegroundColor = ConsoleColor.White;
+
                     Console.SetCursorPosition(borderLeft + currentPointerX, borderTop + currentPointerY);
                     Console.Write('X');
 
