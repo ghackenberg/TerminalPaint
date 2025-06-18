@@ -2,36 +2,36 @@
 {
     internal static class Fill
     {
-        public static void FillImage()
+        public static void Execute()
         {
-            if (Data.imageData[Data.currentPointerY * Data.imageWidth + Data.currentPointerX] != Data.COLORS[Data.currentColor])
+            if (Image.data[Pointer.currentY * Image.width + Pointer.currentX] != Color.current)
             {
-                FillImageRecursive(Data.currentPointerX, Data.currentPointerY, Data.imageData[Data.currentPointerY * Data.imageWidth + Data.currentPointerX]);
+                ExecuteRecursive(Pointer.currentX, Pointer.currentY, Image.data[Pointer.currentY * Image.width + Pointer.currentX]);
 
-                Console.BackgroundColor = Data.COLORS[Data.currentColor];
+                Console.BackgroundColor = Color.current;
                 Console.ForegroundColor = ConsoleColor.White;
 
-                Console.SetCursorPosition(Data.BORDER_LEFT + Data.currentPointerX, Data.BORDER_TOP + Data.currentPointerY);
+                Console.SetCursorPosition(Util.BORDER_LEFT + Pointer.currentX, Util.BORDER_TOP + Pointer.currentY);
                 Console.Write('X');
             }
         }
 
-        private static void FillImageRecursive(int x, int y, ConsoleColor originalColor)
+        private static void ExecuteRecursive(int x, int y, ConsoleColor originalColor)
         {
-            if (x >= 0 && x < Data.imageWidth && y >= 0 && y < Data.imageHeight && Data.imageData[y * Data.imageWidth + x] == originalColor)
+            if (x >= 0 && x < Image.width && y >= 0 && y < Image.height && Image.data[y * Image.width + x] == originalColor)
             {
-                Data.imageData[y * Data.imageWidth + x] = Data.COLORS[Data.currentColor];
+                Image.data[y * Image.width + x] = Color.current;
 
-                Console.BackgroundColor = Data.COLORS[Data.currentColor];
+                Console.BackgroundColor = Color.current;
                 Console.ForegroundColor = ConsoleColor.White;
 
-                Console.SetCursorPosition(Data.BORDER_LEFT + x, Data.BORDER_TOP + y);
+                Console.SetCursorPosition(Util.BORDER_LEFT + x, Util.BORDER_TOP + y);
                 Console.Write(' ');
 
-                FillImageRecursive(x + 1, y, originalColor);
-                FillImageRecursive(x - 1, y, originalColor);
-                FillImageRecursive(x, y + 1, originalColor);
-                FillImageRecursive(x, y - 1, originalColor);
+                ExecuteRecursive(x + 1, y, originalColor);
+                ExecuteRecursive(x - 1, y, originalColor);
+                ExecuteRecursive(x, y + 1, originalColor);
+                ExecuteRecursive(x, y - 1, originalColor);
             }
         }
     }

@@ -1,7 +1,14 @@
-﻿namespace TerminalPaint
+﻿using TerminalPaint.Tools;
+
+namespace TerminalPaint
 {
     internal static class Util
     {
+        public static readonly int BORDER_TOP = 1;
+        public static readonly int BORDER_LEFT = 1;
+        public static readonly int BORDER_RIGHT = 5;
+        public static readonly int BORDER_BOTTOM = 1;
+
         public static void PaintFrame()
         {
             // Paint borders
@@ -88,118 +95,6 @@
 
             Console.SetCursorPosition(1, 0);
             Console.Write("TerminalPaint | Pointer = Arrow Up/Down/Left/Right, Color = Page Up/Down, Paint = Space, Fill = F, Rectangle = R");
-        }
-
-        public static void PaintColorPalette()
-        {
-            for (int color = 0; color < Data.COLORS.Length; color++)
-            {
-                int colorX = Console.WindowWidth - 3;
-                int colorY = 2 + color * 2;
-
-                if (colorY < Console.WindowHeight - 1)
-                {
-                    Console.BackgroundColor = Data.COLORS[color];
-                    Console.ForegroundColor = ConsoleColor.White;
-
-                    Console.SetCursorPosition(colorX, colorY);
-                    if (color == Data.currentColor)
-                    {
-                        Console.Write('X');
-                    }
-                    else
-                    {
-                        Console.Write(' ');
-                    }
-                }
-            }
-        }
-
-        public static void PaintImage()
-        {
-            for (int pixelX = 0; pixelX < Data.imageWidth; pixelX++)
-            {
-                for (int pixelY = 0; pixelY < Data.imageHeight; pixelY++)
-                {
-                    Console.BackgroundColor = Data.imageData[pixelY * Data.imageWidth + pixelX];
-                    Console.ForegroundColor = ConsoleColor.White;
-
-                    Console.SetCursorPosition(Data.BORDER_LEFT + pixelX, Data.BORDER_TOP + pixelY);
-                    if (Data.currentPointerX == pixelX && Data.currentPointerY == pixelY)
-                    {
-                        Console.Write('X');
-                    }
-                    else
-                    {
-                        Console.Write(' ');
-                    }
-                }
-            }
-
-            Console.SetCursorPosition(Data.BORDER_LEFT + Data.currentPointerX + 1, Data.BORDER_TOP + Data.currentPointerY);
-        }
-
-        public static void MovePointer()
-        {
-            // Repaint previous pointer location
-
-            Console.BackgroundColor = Data.imageData[Data.previousPointerY * Data.imageWidth + Data.previousPointerX];
-            Console.ForegroundColor = ConsoleColor.White;
-
-            Console.SetCursorPosition(Data.BORDER_LEFT + Data.previousPointerX, Data.BORDER_TOP + Data.previousPointerY);
-            Console.Write(' ');
-
-            // Repaint current pointer location
-
-            Console.BackgroundColor = Data.imageData[Data.currentPointerY * Data.imageWidth + Data.currentPointerX];
-            Console.ForegroundColor = ConsoleColor.White;
-
-            Console.SetCursorPosition(Data.BORDER_LEFT + Data.currentPointerX, Data.BORDER_TOP + Data.currentPointerY);
-            Console.Write('X');
-
-            // Update previous pointer location
-
-            Data.previousPointerX = Data.currentPointerX;
-            Data.previousPointerY = Data.currentPointerY;
-        }
-
-        public static void LoadFile(string fileName)
-        {
-            // Open file stream
-            FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
-
-            Data.imageWidth = stream.ReadByte();
-            Data.imageHeight = stream.ReadByte();
-
-            Data.imageSize = Data.imageWidth * Data.imageHeight;
-            Data.imageData = new ConsoleColor[Data.imageSize];
-
-            for (int pixel = 0; pixel < Data.imageSize; pixel++)
-            {
-                Data.imageData[pixel] = (ConsoleColor)stream.ReadByte();
-            }
-
-            // Close file stream
-            stream.Close();
-        }
-
-        public static void SaveFile(string fileName)
-        {
-            // Create file and open with write access
-            FileStream stream = new FileStream(fileName, FileMode.Create, FileAccess.Write);
-
-            // Write image width and height to file
-            stream.WriteByte((byte)Data.imageWidth);
-            stream.WriteByte((byte)Data.imageHeight);
-
-            // Write pixel colors to file
-            for (int pixel = 0; pixel < Data.imageSize; pixel++)
-            {
-                stream.WriteByte((byte)Data.imageData[pixel]);
-            }
-
-            // Close file stream
-            stream.Close();
         }
 
         public static bool? ReadBool()
@@ -331,7 +226,7 @@
             PaintBorderBottom();
             PaintTextBottom();
 
-            Console.SetCursorPosition(Data.BORDER_LEFT + Data.currentPointerX + 1, Data.BORDER_TOP + Data.currentPointerY);
+            Console.SetCursorPosition(BORDER_LEFT + Pointer.currentX + 1, BORDER_TOP + Pointer.currentY);
 
             return fileName;
         }

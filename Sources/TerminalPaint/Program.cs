@@ -2,24 +2,17 @@
 
 namespace TerminalPaint
 {
-    internal class Program
+    internal static class Program
     {
         static void Main(string[] args)
         {
-            // Initialize image data
-
-            for (int pixel = 0; pixel < Data.imageSize; pixel++)
-            {
-                Data.imageData[pixel] = ConsoleColor.Black;
-            }
-
             // Make blank screen (and set cursor position to top-left)
 
             Console.Clear();
 
             Util.PaintFrame();
-            Util.PaintColorPalette();
-            Util.PaintImage();
+            Color.PaintPalette();
+            Image.Paint();
 
             // Enter main loop (repaint + read and process user input)
             do
@@ -27,78 +20,53 @@ namespace TerminalPaint
                 // Wait for and process user input
                 ConsoleKeyInfo keyInfo = Console.ReadKey(true);
 
-                if (keyInfo.Key == ConsoleKey.LeftArrow)
+                if (keyInfo.Key == ConsoleKey.PageUp)
                 {
-                    if (Data.currentPointerX > 0)
-                    {
-                        Data.currentPointerX--;
-                        Util.MovePointer();
-                    }
-                }
-                else if (keyInfo.Key == ConsoleKey.RightArrow)
-                {
-                    if (Data.currentPointerX < Data.imageWidth - 1)
-                    {
-                        Data.currentPointerX++;
-                        Util.MovePointer();
-                    }
-                }
-                else if (keyInfo.Key == ConsoleKey.UpArrow)
-                {
-                    if (Data.currentPointerY > 0)
-                    {
-                        Data.currentPointerY--;
-                        Util.MovePointer();
-                    }
-                }
-                else if (keyInfo.Key == ConsoleKey.DownArrow)
-                {
-                    if (Data.currentPointerY < Data.imageHeight - 1)
-                    {
-                        Data.currentPointerY++;
-                        Util.MovePointer();
-                    }
-                }
-                else if (keyInfo.Key == ConsoleKey.PageUp)
-                {
-                    if (Data.currentColor > 0)
-                    {
-                        Data.currentColor--;
-                        Color.ChangeColor();
-                    }
+                    Color.Change(-1);
                 }
                 else if (keyInfo.Key == ConsoleKey.PageDown)
                 {
-                    if (Data.currentColor < Data.COLORS.Length - 1)
-                    {
-                        Data.currentColor++;
-                        Color.ChangeColor();
-                    }
+                    Color.Change(+1);
+                }
+                else if (keyInfo.Key == ConsoleKey.LeftArrow)
+                {
+                    Pointer.Move(-1, 0);
+                }
+                else if (keyInfo.Key == ConsoleKey.RightArrow)
+                {
+                    Pointer.Move(+1, 0);
+                }
+                else if (keyInfo.Key == ConsoleKey.UpArrow)
+                {
+                    Pointer.Move(0, -1);
+                }
+                else if (keyInfo.Key == ConsoleKey.DownArrow)
+                {
+                    Pointer.Move(0, +1);
                 }
                 else if (keyInfo.Key == ConsoleKey.Spacebar)
                 {
-                    Data.imageData[Data.currentPointerY * Data.imageWidth + Data.currentPointerX] = Data.COLORS[Data.currentColor];
-                    Util.MovePointer();
+                    Pointer.Brush();
                 }
                 else if (keyInfo.Key == ConsoleKey.F)
                 {
-                    Fill.FillImage();
+                    Fill.Execute();
                 }
                 else if (keyInfo.Key == ConsoleKey.R)
                 {
-                    Rectangle.DrawRectangle();
+                    Rectangle.Execute();
                 }
                 else if (keyInfo.Key == ConsoleKey.S)
                 {
-                    Save.SaveImage();
+                    Save.Execute();
                 }
                 else if (keyInfo.Key == ConsoleKey.L)
                 {
-                    Load.LoadImage();
+                    Load.Execute();
                 }
                 else if (keyInfo.Key == ConsoleKey.C)
                 {
-                    Clear.ClearImage();
+                    Clear.Execute();
                 }
                 else if (keyInfo.Key == ConsoleKey.Escape)
                 {

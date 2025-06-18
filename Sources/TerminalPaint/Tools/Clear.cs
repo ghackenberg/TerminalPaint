@@ -2,7 +2,7 @@
 {
     internal static class Clear
     {
-        public static void ClearImage()
+        public static void Execute()
         {
             Util.PaintBorderBottom();
 
@@ -13,19 +13,14 @@
 
             if (sure != null && sure == true)
             {
-                Data.imageData = new ConsoleColor[Data.imageSize];
-                for (int pixel = 0; pixel < Data.imageSize; pixel++)
-                {
-                    Data.imageData[pixel] = ConsoleColor.Black;
-                }
-
-                Util.PaintImage();
+                Image.data = new ConsoleColor[Image.size];
+                Image.Paint();
             }
 
             Util.PaintBorderBottom();
             Util.PaintTextBottom();
 
-            Console.SetCursorPosition(Data.BORDER_LEFT + Data.currentPointerX + 1, Data.BORDER_TOP + Data.currentPointerY);
+            Console.SetCursorPosition(Util.BORDER_LEFT + Pointer.currentX + 1, Util.BORDER_TOP + Pointer.currentY);
         }
     }
 }

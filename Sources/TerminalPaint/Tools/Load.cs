@@ -2,7 +2,7 @@
 {
     internal static class Load
     {
-        public static void LoadImage()
+        public static void Execute()
         {
             // Read file name from user input
             string? fileName = Util.ReadFileName(true);
@@ -10,10 +10,21 @@
             // Check if file name has been entered
             if (fileName != null)
             {
-                Util.LoadFile(fileName);
+                // Open file stream
+                FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
 
-                // Repaint entire image
-                Util.PaintImage();
+                Image.width = stream.ReadByte();
+                Image.height = stream.ReadByte();
+                Image.size = Image.width * Image.height;
+                Image.data = new ConsoleColor[Image.size];
+                for (int pixel = 0; pixel < Image.size; pixel++)
+                {
+                    Image.data[pixel] = (ConsoleColor)stream.ReadByte();
+                }
+                Image.Paint();
+
+                // Close file stream
+                stream.Close();
             }
         }
     }
