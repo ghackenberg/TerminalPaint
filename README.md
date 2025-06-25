@@ -21,6 +21,12 @@ Originally, we had only basic drawing features.
 Later we added colors and help text.
 And so the application evolved...
 
+### Rectangles and Lines
+
+In this **fourth version**, we added rectangle and line drawing capabilities to the application.
+
+![](./Screenshots/Rectangles%20and%20Lines.png)
+
 ### Flower Heart
 
 In this **third version**, we added help text to the software in the top and the bottom borders.
