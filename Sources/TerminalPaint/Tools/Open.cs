@@ -1,6 +1,6 @@
 ﻿namespace TerminalPaint.Tools
 {
-    internal static class Load
+    internal static class Open
     {
         public static void Execute()
         {

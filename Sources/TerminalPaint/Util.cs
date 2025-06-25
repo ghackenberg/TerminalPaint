@@ -85,7 +85,7 @@ namespace TerminalPaint
             Console.ForegroundColor = ConsoleColor.Black;
 
             Console.SetCursorPosition(1, Console.WindowHeight - 1);
-            Console.Write("(c) 2025 Dr. Georg Hackenberg <georg.hackenberg@fh-wels.at> | Load = L, Save = S, Clear = C, Close = Escape");
+            Console.Write("(c) 2025 Dr. Georg Hackenberg <georg.hackenberg@fh-wels.at> | Open = O, Save = S, Clear = C, Close = Escape");
         }
 
         public static void PaintTextTop()
@@ -94,7 +94,7 @@ namespace TerminalPaint
             Console.ForegroundColor = ConsoleColor.Black;
 
             Console.SetCursorPosition(1, 0);
-            Console.Write("TerminalPaint | Pointer = Arrow Up/Down/Left/Right, Color = Page Up/Down, Paint = Space, Fill = F, Rectangle = R");
+            Console.Write("TP | Color = Page Up/Down, Pointer = Arrow Up/Down/Left/Right, Paint = Space, Fill = F, Rectangle = R, Line = L");
         }
 
         public static bool? ReadBool()

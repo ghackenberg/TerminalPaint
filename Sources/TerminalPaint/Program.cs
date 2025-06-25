@@ -56,17 +56,17 @@ namespace TerminalPaint
                 {
                     Rectangle.Execute();
                 }
-                else if (keyInfo.Key == ConsoleKey.T)
+                else if (keyInfo.Key == ConsoleKey.L)
                 {
                     Line.Execute();
+                }
+                else if (keyInfo.Key == ConsoleKey.O)
+                {
+                    Open.Execute();
                 }
                 else if (keyInfo.Key == ConsoleKey.S)
                 {
                     Save.Execute();
-                }
-                else if (keyInfo.Key == ConsoleKey.L)
-                {
-                    Load.Execute();
                 }
                 else if (keyInfo.Key == ConsoleKey.C)
                 {
