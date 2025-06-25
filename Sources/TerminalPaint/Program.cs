@@ -56,6 +56,10 @@ namespace TerminalPaint
                 {
                     Rectangle.Execute();
                 }
+                else if (keyInfo.Key == ConsoleKey.T)
+                {
+                    Line.Execute();
+                }
                 else if (keyInfo.Key == ConsoleKey.S)
                 {
                     Save.Execute();

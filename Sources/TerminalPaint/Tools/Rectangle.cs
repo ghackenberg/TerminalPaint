@@ -47,7 +47,7 @@
                 }
                 else if (keyInfo.Key == ConsoleKey.Enter)
                 {
-                    Fill();
+                    Commit();
                     break;
                 }
                 else if (keyInfo.Key == ConsoleKey.Escape)
@@ -75,7 +75,7 @@
                 Pointer.currentY = newY;
             }
 
-            // Update rectangle bounds
+            // Calculate rectangle bounds
 
             int minX = Math.Min(startX, Pointer.currentX);
             int maxX = Math.Max(startX, Pointer.currentX);
@@ -214,8 +214,10 @@
             Pointer.previousY = Pointer.currentY;
         }
 
-        private static void Fill()
+        private static void Commit()
         {
+            // Calculate rectangle bounds
+
             int minX = Math.Min(startX, Pointer.currentX);
             int maxX = Math.Max(startX, Pointer.currentX);
 
@@ -238,6 +240,8 @@
                 }
             }
 
+            // Top and bottom borders
+
             Util.PaintBorderTop();
             Util.PaintTextTop();
 
@@ -255,6 +259,8 @@
 
         private static void Cancel()
         {
+            // Calculate rectangle bounds
+
             int minX = Math.Min(startX, Pointer.currentX);
             int maxX = Math.Max(startX, Pointer.currentX);
 
@@ -293,6 +299,8 @@
                 Console.BackgroundColor = Image.data[maxY * Image.width + x];
                 Console.Write(' ');
             }
+
+            // Top and bottom borders
 
             Util.PaintBorderTop();
             Util.PaintTextTop();
