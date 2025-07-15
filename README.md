@@ -1,9 +1,10 @@
 # TerminalPaint
 
 **TerminalPaint** is a basic paint application running in the terminal.
-The application features a color picker as well as loading and saving of images.
+The application features a color picker, rectangle and line drawing tools, as well as loading and saving of images.
 The color picker provides access to a small palette of colors supported on a wide range of platforms (e.g. Windows, Linux, and MacOS).
-Image loading and saving uses a custom image format, which intentionally is not compatible with other tools.
+The line drawing tool uses a simple implementation of the Bresenham algorithm for line discretization.
+And image loading and saving uses a custom image format, which intentionally is not compatible with other tools.
 The application itself is written in C# with .NET Core.
 
 We use this application for teaching programming at the [School of Engineering](https://fh-ooe.at/en/campus-wels) of the [University of Applied Sciences Upper Austria](https://fh-ooe.at/en).
@@ -11,123 +12,41 @@ According to our experience, the application is simple enough to be fully unters
 
 *Enjoy! 😉*
 
-![](./Screencasts/Rectangles%20and%20Fill.gif#)
-
-## Screenshots
-
-Here are some screenshots of the application.
-The screenshots also document the evolution of the software.
-Originally, we had only basic drawing features.
-Later we added colors and help text.
-And so the application evolved...
-
-### Rectangles and Lines
-
-In this **fourth version**, we added rectangle and line drawing capabilities to the application.
-
-![](./Screenshots/Rectangles%20and%20Lines.png)
-
-### Flower Heart
-
-In this **third version**, we added help text to the software in the top and the bottom borders.
-
-![](./Screenshots/Flower%20Heart%20with%20Textbars.png)
-
-### Rocket
-
-In this **second version** of the software, we added a color palette and selector at the right corner.
-
-![](./Screenshots/Rocket%20with%20Color%20Picker.png)
-
-### Man with Hat
-
-In this **first version**, only basic drawing capabilities were available solely with red color pixels.
-
-![](./Screenshots/Man%20with%20Hat.png)
-
 ## Lessons
 
-TODO
+We use the **TerminalPaint** application to teach the following lessons:
 
-### Console Basics
+- 📖 [**Lesson 1: Console basics**](./Lessons/01_Console.md) - Working with the *C# Console API*.
+- 📖 [**Lesson 2: Image representation**](./Lessons/02_Image.md) - Representing images in computer memory.
+- 📖 [**Lesson 3: Color selection**](./Lessons/03_Color.md) - Implementing a color picking feature.
+- 📖 [**Lesson 4: Clear operation**](./Lessons/04_Clear.md) - Clearing the entire image.
+- 📖 [**Lesson 5: Store operation**](./Lessons/05_Store.md) - Storing images to and loading images from disk.
+- 📖 [**Lesson 6: Fill operation**](./Lessons/06_Fill.md.md) - Filling image regions with a new color.
+- 📖 [**Lesson 7: Rectangle operation**](./Lessons/07_Rectangle.md) - Implementing a rectangle drawing tool.
+- 📖 [**Lesson 8: Line operation**](./Lessons/08_Line.md.md) - Implementing a line drawing tool.
+- 📖 [**Lesson 9: Outlook**](./Lessons/09_Outlook.md) - Where you can go from here.
 
-TODO
+## Impressions
 
-![](./Drawings/Console%20Window%20Width%20and%20Height.jpg)
+This section includes **screencasts** and **screenshots** of the **TerminalPaint** application.
 
-TODO
+### Screencasts
 
-```csharp
-Console.Clear();
-```
+Here is a **screencast** of the **TerminalPaint** application in action:
 
-TODO
+![](./Screencasts/Rectangles%20and%20Fill.gif)
 
-```csharp
-int centerX = Console.WindowWidth / 2;
-int centerY = Console.WindowHeight / 2;
-```
+### Screenshots
 
-TODO
+And here are some **screenshots** of drawings made with **TerminalPaint**:
 
-```csharp
-Console.SetCursorPosition(centerX, centerY);
-```
+<img src="./Screenshots/Flower%20Heart%20with%20Textbars.png" width="50%"/><img src="./Screenshots/Rocket%20with%20Color%20Picker.png" width="50%"/>
+<img src="./Screenshots/Rectangles%20and%20Lines.png" width="50%"/><img src="./Screenshots/Man%20with%20Hat.png" width="50%"/>
 
-TODO
+## Documents
 
-```csharp
-Console.BackgroundColor = ConsoleColor.Black;
-Console.ForegroundColor = ConsoleColor.White;
-```
+Finally, here are the standard documents shipped with open source software:
 
-TODO
-
-```csharp
-Console.Write('X')
-````
-
-### Image Data
-
-TODO
-
-![](./Drawings/Console%20Window%20and%20Image%20Data.jpg)
-
-TODO
-
-```csharp
-int imageWidth = Console.WindowWidth - 2;
-int imageHeight = Console.WindowHeight - 2;
-```
-
-TODO
-
-```csharp
-ConsoleColor[] imageData = ConsoleColor[imageWidth * imageHeight];
-```
-
-TODO
-
-![](./Drawings/Image%20Data%20Array%20Indexing.jpg)
-
-TODO
-
-```csharp
-imageData[y * imageWidth + x] = ConsoleColor.Red;
-```
-
-### Color Selection
-
-TODO
-
-![](./Drawings/Color%20Selection.jpg)
-
-## Outlook
-
-TODO
-
-### GUI Object Models
-
-TODO
-
-![](./Drawings/Graphical%20User%20Interface%20Object%20Model.jpg)
+* 📄 [**LICENSE.md**](./LICENSE.md) - Explains the license of the source code.
+* 📄 [**CHANGELOG.md**](./CHANGELOG.md) - Summarizes major changes to the source code.
+* 📄 [**CONTRIBUTING.md**](./CONTRIBUTING.md) - Defines guidelines for contributing to the source code. 
