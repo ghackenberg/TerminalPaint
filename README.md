@@ -1,4 +1,4 @@
-# TerminalPaint
+# 🖼️ TerminalPaint
 
 **TerminalPaint** is a basic paint application running in the terminal.
 The application features a color picker, rectangle and line drawing tools, as well as loading and saving of images.
