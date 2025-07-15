@@ -39,6 +39,110 @@ Here are some drawings made with **TerminalPaint**:
 <img src="./Screenshots/Flower%20Heart%20with%20Textbars.png" width="50%"/><img src="./Screenshots/Rocket%20with%20Color%20Picker.png" width="50%"/>
 <img src="./Screenshots/Rectangles%20and%20Lines.png" width="50%"/><img src="./Screenshots/Man%20with%20Hat.png" width="50%"/>
 
+## Details
+
+Here is an overview of the classes including their fields, methods, and dependencies:
+
+```mermaid
+classDiagram
+    class Program {
+        Main() void$
+    }
+
+    class Tool {
+        <<abstract>>
+    }
+    class Color {
+        current: ConsoleColor$
+        PaintPalette() void$
+        Change(delta: int) void$
+    }
+    class Pointer {
+        currentX: int$
+        currentY: int$
+        Move(dx: int, dy: int) void$
+        Brush() void$
+    }
+    class Clear {
+        Execute() void$
+    }
+    class Fill {
+        Execute() void$
+    }
+    class Rectangle {
+        -startX: int$
+        -startY: int$
+        Execute() void$
+        -Move(dx: int, dy: int) void$
+        -Commit() void$
+        -Cancel() void$
+    }
+    class Line {
+        -startX: int$
+        -startY: int$
+        Execute() void$
+        -Move(dx: int, dy: int) void$
+        -Commit() void$
+        -Cancel() void$
+    }
+    class Open {
+        Execute() void$
+    }
+    class Save {
+        Execute() void$
+    }
+
+    class Core {
+        <<abstract>>
+    }
+    class Image {
+        width: int$
+        height: int$
+        size: int = width * height$
+        data: ConsoleColor[]$
+        Paint() void$
+    }
+    class Util {
+        borderTop: int$
+        borderLeft: int$
+        borderRight: int$
+        borderBottom: int$
+        PaintFrame() void$
+        PaintBorderTop() void$
+        PaintBorderLeft() void$
+        PaintBorderRight() void$
+        PaintBorderBottom() void$
+        PaintTextTop() void$
+        PaintTextBottom() void$
+        ReadBool() bool$
+        ReadFileName(exists: bool) string$
+    }
+
+    Program ..> Tool: calls
+
+    Tool <|-- Color: is a
+    Tool <|-- Pointer: is a
+    Tool <|-- Clear: is a
+    Tool <|-- Fill: is a
+    Tool <|-- Rectangle: is a
+    Tool <|-- Line: is a
+    Tool <|-- Open: is a
+    Tool <|-- Save: is a
+
+    Color ..> Core: uses
+    Pointer ..> Core: uses
+    Clear ..> Core: uses
+    Fill ..> Core: uses
+    Rectangle ..> Core: uses
+    Line ..> Core: uses
+    Open ..> Core: uses
+    Save ..> Core: uses
+
+    Core <|-- Image: is a
+    Core <|-- Util: is a
+
+```
+
 ## Documents
 
 Finally, here are the standard documents shipped with open source software:
