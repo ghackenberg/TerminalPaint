@@ -12,6 +12,12 @@ According to our experience, the application is simple enough to be fully unters
 
 *Enjoy! 😉*
 
+## Screencasts
+
+Here are some screencasts showing **TerminalPaint** in action:
+
+![](./Screencasts/Rectangles%20and%20Fill.gif)
+
 ## Lessons
 
 We use the **TerminalPaint** application to teach the following lessons:
@@ -26,19 +32,9 @@ We use the **TerminalPaint** application to teach the following lessons:
 - 📖 [**Lesson 8: Line operation**](./Lessons/08_Line.md.md) - Implementing a line drawing tool.
 - 📖 [**Lesson 9: Outlook**](./Lessons/09_Outlook.md) - Where you can go from here.
 
-## Impressions
+## Drawings
 
-This section includes **screencasts** and **screenshots** of the **TerminalPaint** application.
-
-### Screencasts
-
-Here is a **screencast** of the **TerminalPaint** application in action:
-
-![](./Screencasts/Rectangles%20and%20Fill.gif)
-
-### Screenshots
-
-And here are some **screenshots** of drawings made with **TerminalPaint**:
+Here are some drawings made with **TerminalPaint**:
 
 <img src="./Screenshots/Flower%20Heart%20with%20Textbars.png" width="50%"/><img src="./Screenshots/Rocket%20with%20Color%20Picker.png" width="50%"/>
 <img src="./Screenshots/Rectangles%20and%20Lines.png" width="50%"/><img src="./Screenshots/Man%20with%20Hat.png" width="50%"/>
