@@ -20,6 +20,8 @@ namespace TerminalPaint {
 }
 ```
 
+In the following, we first TODO before TODO
+
 ## Step 1: Clear screen
 
 First, we want to start with a clean slate. We can clear the console window from any previous text by using the `Console.Clear()` method.
@@ -48,6 +50,8 @@ We will paint the border in three steps: the top border, the left and right bord
 // Step 2.2: Paint left and right border
 // Step 2.3: Paint bottom border
 ```
+
+In the following, we explain these three sub-steps in more detail.
 
 ### Step 2.1: Paint top border
 
