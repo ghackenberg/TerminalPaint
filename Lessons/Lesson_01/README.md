@@ -27,6 +27,8 @@ namespace TerminalPaint {
 }
 ```
 
+In the following, we explain Steps 3, 4, and 5 in more detail.
+
 ## Step 3: Initialize current pointer location
 
 Before we can move the pointer, we need to know where it is. We will use two integer variables, `currentX` and `currentY`, to store the horizontal and vertical coordinates of the pointer. To start, let's place the pointer in the center of the console window. We can get the window's width and height using `Console.WindowWidth` and `Console.WindowHeight`.
@@ -39,22 +41,16 @@ int currentY = Console.WindowHeight / 2;
 
 ## Step 4: Initialize previous pointer location
 
-To create the illusion of a moving pointer, we need to erase the pointer from its old position before drawing it in the new one. To do this, we need to keep track of the pointer's previous location. We will use two more integer variables, `previousX` and `previousY`, for this purpose. We can initialize the previous location to any value that is inside of our drawing area, for example (0, 0).
+To create the illusion of a moving pointer, we need to erase the pointer from its old position before drawing it in the new one. To do this, we need to keep track of the pointer's previous location. We will use two more integer variables, `previousX` and `previousY`, for this purpose. We can initialize the previous location to any value that is inside of our drawing area, for example (1, 1).
 
 ```csharp
-int previousX = 0;
-int previousY = 0;
+int previousX = 1;
+int previousY = 1;
 ```
 
 ## Step 5: Main loop
 
-Now for the core of our application: the main loop. This loop will run continuously, waiting for user input and updating the pointer's position accordingly. We use a `while (true)` loop to keep the application running until the user decides to exit. Inside the main loop, we will perform five main actions in each iteration:
-
-1. Clear the pointer from its previous location.
-2. Draw the pointer at its new, current location.
-3. Update the previous location to the current location for the next iteration.
-4. Read the user's next key press.
-5. Process the user's input to update the pointer's coordinates.
+Now for the core of our application: the main loop. This loop will run continuously, waiting for user input and updating the pointer's position accordingly. We use a `while (true)` loop to keep the application running until the user decides to exit. Inside the main loop, we will perform four main actions in each iteration:
 
 ```csharp
 while (true) {
@@ -64,6 +60,8 @@ while (true) {
     // Step 5.4: Read and process next user input
 }
 ```
+
+In the following, we explain Steps 5.1, 5.2, 5.3, and 5.4 in more detail.
 
 ### Step 5.1: Clear previous pointer location
 
@@ -117,6 +115,8 @@ else if (input.Key == ConsoleKey.Escape)
 else
     // Case f: Ignore input (and continue with next iteration)
 ```
+
+In the following, we explain Case a, b, c, d, e, and f in more detail.
 
 #### Case a: Move pointer up
 
