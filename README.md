@@ -37,8 +37,8 @@ We use the **TerminalPaint** application to teach the following lessons:
 
 Here are some drawings made with **TerminalPaint**:
 
-<img src="./Screenshots/Flower%20Heart%20with%20Textbars.png" width="50%"/><img src="./Screenshots/Rocket%20with%20Color%20Picker.png" width="50%"/>
-<img src="./Screenshots/Rectangles%20and%20Lines.png" width="50%"/><img src="./Screenshots/Man%20with%20Hat.png" width="50%"/>
+<img src="./Drawings/Flower%20Heart%20with%20Textbars.png" width="50%"/><img src="./Drawings/Rocket%20with%20Color%20Picker.png" width="50%"/>
+<img src="./Drawings/Rectangles%20and%20Lines.png" width="50%"/><img src="./Drawings/Man%20with%20Hat.png" width="50%"/>
 
 ## Details
 
