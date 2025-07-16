@@ -1,7 +1,13 @@
 ﻿namespace TerminalPaint.Tools
 {
+    /// <summary>
+    /// Implementation of the image open from file tool.
+    /// </summary>
     internal static class Open
     {
+        /// <summary>
+        /// Execute the file open tool.
+        /// </summary>
         public static void Execute()
         {
             // Read file name from user input

@@ -2,8 +2,15 @@
 
 namespace TerminalPaint
 {
+    /// <summary>
+    /// The main class with the main method.
+    /// </summary>
     internal static class Program
     {
+        /// <summary>
+        /// The entry point of application execution.
+        /// </summary>
+        /// <param name="args">The command line arguments passed to the application.</param>
         static void Main(string[] args)
         {
             // Make blank screen (and set cursor position to top-left)
@@ -17,9 +24,10 @@ namespace TerminalPaint
             // Enter main loop (repaint + read and process user input)
             do
             {
-                // Wait for and process user input
+                // Read next user input
                 ConsoleKeyInfo keyInfo = Console.ReadKey(true);
 
+                // Process user input
                 if (keyInfo.Key == ConsoleKey.PageUp)
                 {
                     Color.Change(-1);

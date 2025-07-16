@@ -2,12 +2,29 @@
 {
     internal static class Pointer
     {
+        /// <summary>
+        /// The previous pointer x coorindate.
+        /// </summary>
         public static int previousX = Image.width / 2;
+        /// <summary>
+        /// The previous pointer y coordinate.
+        /// </summary>
         public static int previousY = Image.height / 2;
 
+        /// <summary>
+        /// The current pointer x coordinate.
+        /// </summary>
         public static int currentX = Image.width / 2;
+        /// <summary>
+        /// The current pointer y coordinate.
+        /// </summary>
         public static int currentY = Image.height / 2;
 
+        /// <summary>
+        /// Move the pointer by a defined delta.
+        /// </summary>
+        /// <param name="dx">The delta in x direction.</param>
+        /// <param name="dy">The delta in y direction.</param>
         public static void Move(int dx, int dy)
         {
             // Update current pointer location
@@ -46,9 +63,16 @@
             previousY = currentY;
         }
 
+        /// <summary>
+        /// Update the color of the pixel at the current pointer location.
+        /// </summary>
         public static void Brush()
         {
+            // Update the image data
+
             Image.data[currentY * Image.width + currentX] = Color.current;
+
+            // Update the screen pixel
 
             Move(0, 0);
         }

@@ -1,14 +1,30 @@
 ﻿namespace TerminalPaint.Tools
 {
+    /// <summary>
+    /// Implementation of the rectangle drawing tool.
+    /// </summary>
     internal static class Rectangle
     {
+        /// <summary>
+        /// The x coordinate, where rectangle drawing started.
+        /// </summary>
         private static int startX;
+        /// <summary>
+        /// The y coordinate, where rectangle drawing started.
+        /// </summary>
         private static int startY;
 
+        /// <summary>
+        /// Execute the rectangle drawing tool.
+        /// </summary>
         public static void Execute()
         {
+            // Remember, where rectangle drawing started
+
             startX = Pointer.currentX;
             startY = Pointer.currentY;
+
+            // Update top and border borders of the application
 
             Util.PaintBorderTop();
             Util.PaintBorderBottom();
@@ -19,16 +35,22 @@
             Console.SetCursorPosition(1, Console.WindowHeight - 1);
             Console.Write("(c) 2025 Dr. Georg Hackenberg <georg.hackenberg@fh-wels.at> | Cancel = Escape");
 
+            // Set cursor to current pointer location
+
             Console.BackgroundColor = Image.data[startY * Image.width + startX];
             Console.ForegroundColor = ConsoleColor.White;
 
             Console.SetCursorPosition(startX + Util.BORDER_LEFT, startY + Util.BORDER_TOP);
             Console.Write("X");
 
+            // Read and process user inputs
+
             do
             {
+                // Read next user input
                 ConsoleKeyInfo keyInfo = Console.ReadKey(true);
 
+                // Process user input
                 if (keyInfo.Key == ConsoleKey.LeftArrow)
                 {
                     Move(-1, 0);
@@ -59,9 +81,14 @@
             while (true);
         }
 
+        /// <summary>
+        /// Move the rectangle target location by a delta and update rectangle preview.
+        /// </summary>
+        /// <param name="dx">The delta in x direction.</param>
+        /// <param name="dy">The delta in y direction.</param>
         private static void Move(int dx, int dy)
         {
-            // Update current pointer location
+            // Update current pointer location (= rectangle target location)
 
             int newX = Pointer.currentX + dx;
             int newY = Pointer.currentY + dy;
@@ -83,12 +110,20 @@
             int minY = Math.Min(startY, Pointer.currentY);
             int maxY = Math.Max(startY, Pointer.currentY);
 
+            // Update rectangle preview
+
             if (Pointer.previousX != Pointer.currentX)
             {
+                // Case 1: Rectangle target has been moved left or right!
+
                 if (Pointer.previousX < Pointer.currentX)
                 {
+                    // Case 1.1: Rectangle target has been moved left
+
                     if (Pointer.previousX != startX)
                     {
+                        // Clear the vertical preview line at the previous target location
+
                         for (int y = minY; y <= maxY; y++)
                         {
                             Console.BackgroundColor = Image.data[y * Image.width + Pointer.previousX];
@@ -100,6 +135,8 @@
 
                     if (Pointer.currentX != startX)
                     {
+                        // Paint the vertical preview line at the current target location
+
                         for (int y = minY; y <= maxY; y++)
                         {
                             Console.BackgroundColor = Image.data[y * Image.width + Pointer.currentX];
@@ -111,8 +148,12 @@
                 }
                 else
                 {
+                    // Case 1.2: Rectangle target has been moved right
+
                     if (Pointer.currentX != startX)
                     {
+                        // Paint the vertical preview line at the current target location
+
                         for (int y = minY; y <= maxY; y++)
                         {
                             Console.BackgroundColor = Image.data[y * Image.width + Pointer.currentX];
@@ -124,6 +165,8 @@
 
                     if (Pointer.previousX != startX)
                     {
+                        // Clear the vertical preview line at the previous target location
+
                         for (int y = minY; y <= maxY; y++)
                         {
                             Console.SetCursorPosition(Util.BORDER_LEFT + Pointer.previousX, Util.BORDER_TOP + y);
@@ -137,10 +180,16 @@
 
             if (Pointer.previousY != Pointer.currentY)
             {
+                // Case 2: Rectangle target has been moved up or down
+
                 if (Pointer.previousY < Pointer.currentY)
                 {
+                    // Case 2.1: Rectangle target has been moved down
+
                     if (Pointer.previousY != startY)
                     {
+                        // Clear the horizontal preview line at the previous target location
+
                         Console.SetCursorPosition(Util.BORDER_LEFT + minX, Util.BORDER_TOP + Pointer.previousY);
 
                         for (int x = minX; x <= maxX; x++)
@@ -151,6 +200,8 @@
                     }
                     if (Pointer.currentY != startY)
                     {
+                        // Paint the horizontal preview line at the current target location
+
                         Console.SetCursorPosition(Util.BORDER_LEFT + minX, Util.BORDER_TOP + Pointer.currentY);
 
                         for (int x = minX; x <= maxX; x++)
@@ -162,8 +213,12 @@
                 }
                 else
                 {
+                    // Case 2.2.: Rectangle target has been moved up
+
                     if (Pointer.currentY != startY)
                     {
+                        // Paint the horizontal preview line at the current target location
+
                         Console.SetCursorPosition(Util.BORDER_LEFT + minX, Util.BORDER_TOP + Pointer.currentY);
 
                         for (int x = minX; x <= maxX; x++)
@@ -175,6 +230,8 @@
 
                     if (Pointer.previousY != startY)
                     {
+                        // Clear the horizontal preview line at the previous target location
+
                         Console.SetCursorPosition(Util.BORDER_LEFT + minX, Util.BORDER_TOP + Pointer.previousY);
 
                         for (int x = minX; x <= maxX; x++)
@@ -186,7 +243,7 @@
                 }
             }
 
-            // Other corners
+            // Draw other corder markers
 
             Console.BackgroundColor = Image.data[startY * Image.width + Pointer.currentX];
             Console.SetCursorPosition(Util.BORDER_LEFT + Pointer.currentX, Util.BORDER_TOP + startY);
@@ -196,13 +253,13 @@
             Console.SetCursorPosition(Util.BORDER_LEFT + startX, Util.BORDER_TOP + Pointer.currentY);
             Console.Write('+');
 
-            // Start corner
+            // Draw start corner marker
 
             Console.BackgroundColor = Image.data[startY * Image.width + startX];
             Console.SetCursorPosition(Util.BORDER_LEFT + startX, Util.BORDER_TOP + startY);
             Console.Write('O');
 
-            // Current pointer
+            // Draw target corner marker (= current pointer location marker)
 
             Console.BackgroundColor = Image.data[Pointer.currentY * Image.width + Pointer.currentX];
             Console.SetCursorPosition(Util.BORDER_LEFT + Pointer.currentX, Util.BORDER_TOP + Pointer.currentY);
@@ -214,6 +271,9 @@
             Pointer.previousY = Pointer.currentY;
         }
 
+        /// <summary>
+        /// Commit the rectangle drawing operation, clear the rectangle preview, and draw the rectangle with the current color.
+        /// </summary>
         private static void Commit()
         {
             // Calculate rectangle bounds
@@ -224,7 +284,7 @@
             int minY = Math.Min(startY, Pointer.currentY);
             int maxY = Math.Max(startY, Pointer.currentY);
 
-            // Rectangle
+            // Paint rectangle with current color
 
             Console.BackgroundColor = Color.current;
 
@@ -240,7 +300,7 @@
                 }
             }
 
-            // Top and bottom borders
+            // Reset top and bottom borders of the application
 
             Util.PaintBorderTop();
             Util.PaintTextTop();
@@ -248,7 +308,7 @@
             Util.PaintBorderBottom();
             Util.PaintTextBottom();
 
-            // Current pointer
+            // Set cursor to current pointer location
 
             Console.BackgroundColor = Image.data[Pointer.currentY * Image.width + Pointer.currentX];
             Console.ForegroundColor = ConsoleColor.White;
@@ -257,6 +317,9 @@
             Console.Write('X');
         }
 
+        /// <summary>
+        /// Cancel the rectangle drawing operation and clear the rectangle preview.
+        /// </summary>
         private static void Cancel()
         {
             // Calculate rectangle bounds
@@ -267,7 +330,7 @@
             int minY = Math.Min(startY, Pointer.currentY);
             int maxY = Math.Max(startY, Pointer.currentY);
 
-            // Top row
+            // Clear top horizonal line preview
 
             Console.SetCursorPosition(Util.BORDER_LEFT + minX, Util.BORDER_TOP + minY);
 
@@ -277,7 +340,7 @@
                 Console.Write(' ');
             }
 
-            // Intermediate rows
+            // Clear left and right vertical line previews
 
             for (int y = minY + 1; y <= maxY - 1; y++)
             {
@@ -290,7 +353,7 @@
                 Console.Write(' ');
             }
 
-            // Bottom row
+            // Clear bottom horizontal line preview
 
             Console.SetCursorPosition(Util.BORDER_LEFT + minX, Util.BORDER_TOP + maxY);
 
@@ -300,7 +363,7 @@
                 Console.Write(' ');
             }
 
-            // Top and bottom borders
+            // Reset top and bottom borders of the application
 
             Util.PaintBorderTop();
             Util.PaintTextTop();
@@ -308,7 +371,7 @@
             Util.PaintBorderBottom();
             Util.PaintTextBottom();
 
-            // Current pointer
+            // Set cursor to current pointer location
 
             Console.BackgroundColor = Image.data[Pointer.currentY * Image.width + Pointer.currentX];
             Console.ForegroundColor = ConsoleColor.White;

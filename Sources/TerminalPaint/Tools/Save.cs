@@ -1,7 +1,13 @@
 ﻿namespace TerminalPaint.Tools
 {
+    /// <summary>
+    /// Implementation of the image save to file tool.
+    /// </summary>
     internal static class Save
     {
+        /// <summary>
+        /// Execute the file save operation.
+        /// </summary>
         public static void Execute()
         {
             // Let the user choose the file name
