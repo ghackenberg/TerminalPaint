@@ -6,21 +6,21 @@ TODO
 
 TODO
 
-![](../Drawings/Console%20Window%20and%20Image%20Coordinates%201.jpg)
+![](../../Drawings/Console%20Window%20and%20Image%20Coordinates%201.jpg)
 
 TODO
 
-![](../Drawings/Console%20Window%20and%20Image%20Coordinates%202.jpg)
+![](../../Drawings/Console%20Window%20and%20Image%20Coordinates%202.jpg)
 
 TODO
 
-![](../Drawings/Console%20Window%20and%20Image%20Coordinates%203.jpg)
+![](../../Drawings/Console%20Window%20and%20Image%20Coordinates%203.jpg)
 
 ## Image Arrays and Pixel Indices
 
 TODO
 
-![](../Drawings/Console%20Window%20and%20Image%20Data.jpg)
+![](../../Drawings/Console%20Window%20and%20Image%20Data.jpg)
 
 TODO
 
@@ -37,7 +37,7 @@ ConsoleColor[] imageData = ConsoleColor[imageWidth * imageHeight];
 
 TODO
 
-![](../Drawings/Image%20Data%20Array%20Indexing.jpg)
+![](../../Drawings/Image%20Data%20Array%20Indexing.jpg)
 
 TODO
 

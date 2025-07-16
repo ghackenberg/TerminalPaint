@@ -22,12 +22,13 @@ namespace TerminalPaint {
             // Step 3: Initialize current pointer location
             // Step 4: Initialize previous pointer location
             // Step 5: Main loop
+            // Step 6: Say goodbye
         }
     }
 }
 ```
 
-In the following, we explain Steps 3, 4, and 5 in more detail.
+In the following, we explain Steps 3, 4, 5, and 6 in more detail.
 
 ## Step 3: Initialize current pointer location
 
@@ -181,3 +182,27 @@ If the user presses any other key, we don't want anything to happen. The `contin
 ```csharp
 continue;
 ```
+## Step 6: Say goodbye
+
+TODO
+
+```csharp
+Console.BackgroundColor = ConsoleColor.Black;
+Console.ForegroundColor = ConsoleColor.White;
+```
+
+TODO
+
+```csharp
+Console.Clear();
+```
+
+TODO
+
+```csharp
+Console.WriteLine("Good bye!");
+```
+
+TODO
+
+![Screenshot of the console window showing the goodbye message after exiting the main loop](./Screenshot.png)

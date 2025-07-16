@@ -1,4 +1,4 @@
-﻿namespace Lesson_01
+﻿namespace Lesson_02
 {
     internal class Program
     {
@@ -51,8 +51,31 @@
 
             // Define previous pointer location
 
-            int previousX = 1;
-            int previousY = 1;
+            int previousX = 0;
+            int previousY = 0;
+
+            // Compute image dimensions
+
+            int imageWidth = Console.WindowWidth - 2;
+            int imageHeight = Console.WindowHeight - 2;
+
+            // Compute image size
+
+            int imageSize = imageWidth * imageHeight;
+
+            // Initialize image data
+
+            ConsoleColor[] imageData = new ConsoleColor[imageSize];
+
+            for (int pixel = 0; pixel < imageSize; pixel++)
+            {
+                imageData[pixel] = ConsoleColor.Black;
+            }
+
+            // Define image offset
+
+            int imageOffsetX = 1;
+            int imageOffsetY = 1;
 
             // Read and process user input
 
@@ -60,18 +83,18 @@
             {
                 // Reset previous pointer location
 
-                Console.SetCursorPosition(previousX, previousY);
+                Console.SetCursorPosition(imageOffsetX + previousX, imageOffsetY + previousY);
 
-                Console.BackgroundColor = ConsoleColor.Black;
+                Console.BackgroundColor = imageData[previousY * imageWidth + previousX];
                 Console.ForegroundColor = ConsoleColor.White;
 
                 Console.Write(' ');
 
                 // Paint current pointer location
 
-                Console.SetCursorPosition(currentX, currentY);
+                Console.SetCursorPosition(imageOffsetX + currentX, imageOffsetY + currentY);
 
-                Console.BackgroundColor = ConsoleColor.Black;
+                Console.BackgroundColor = imageData[currentY * imageWidth + currentX];
                 Console.ForegroundColor = ConsoleColor.White;
 
                 Console.Write('X');
@@ -87,31 +110,35 @@
 
                 if (input.Key == ConsoleKey.UpArrow)
                 {
-                    if (currentY > 1)
+                    if (currentY > 0)
                     {
                         currentY--;
                     }
                 }
                 else if (input.Key == ConsoleKey.DownArrow)
                 {
-                    if (currentY < Console.WindowHeight - 2)
+                    if (currentY < imageHeight - 1)
                     {
                         currentY++;
                     }
                 }
                 else if (input.Key == ConsoleKey.LeftArrow)
                 {
-                    if (currentX > 1)
+                    if (currentX > 0)
                     {
                         currentX--;
                     }
                 }
                 else if (input.Key == ConsoleKey.RightArrow)
                 {
-                    if (currentX < Console.WindowWidth - 2)
+                    if (currentX < imageWidth - 1)
                     {
                         currentX++;
                     }
+                }
+                else if (input.Key == ConsoleKey.Spacebar)
+                {
+                    imageData[currentY * imageWidth + currentX] = ConsoleColor.Red;
                 }
                 else if (input.Key == ConsoleKey.Escape)
                 {
