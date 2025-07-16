@@ -1,6 +1,6 @@
 # 📖 Lesson 2: Image representation
 
-*This lesson is based on [Lesson 1: Pointer navigation](../Lesson_01/README.md).*
+*Previous lesson: [Pointer navigation](../Lesson_01/README.md) | Next lesson: [Color selection](../Lesson_03/README.md)*
 
 In this lesson, we will learn how to represent our drawing area as an "image" in the computer's memory. This is a big step up from just moving a pointer. We will create a data structure that stores the color of every single pixel on our canvas. This will allow us to change the color of pixels and have the program remember those changes. The screencast below shows our goal: we can move the pointer around and, by pressing the spacebar, change the color of the pixels to red.
 
@@ -38,7 +38,7 @@ In the following, we first explain how to set up the data structure for our imag
 
 To store our drawing, we need a place in memory. We'll use a one-dimensional array, where each element represents the color of a single pixel on our canvas. But first, we need to figure out how big our canvas is. The drawing below illustrates that our drawing area (the "image") is the size of the console window minus the borders on each side.
 
-![Blackboard drawing visualizing the difference between console window width/height, top/bottom border rows, left/right border columns, remaining image width/height, and computation of pixel count from image width and height](../../Drawings/Console%20Window%20and%20Image%20Data.jpg)
+![Blackboard drawing visualizing the difference between console window width/height, top/bottom border rows, left/right border columns, remaining image width/height, and computation of pixel count from image width and height](./Console%20Window%20and%20Image%20Data.jpg)
 
 Since the border takes up one character on the left and one on the right, the width of our image is the total window width minus two. The same logic applies to the height.
 
@@ -69,7 +69,7 @@ for (int pixel = 0; pixel < imageSize; pixel++) {
 
 There's one more important detail. The console window's coordinates start at (0, 0) in the top-left corner. However, our drawing area is offset from the edge because of the border. The drawing below shows this offset. Our image's top-left corner is at the console coordinate (1, 1). We'll store this offset in variables to make it easy to convert between image coordinates and console coordinates.
 
-![Blackboard drawing introducing the image offset vector](../../Drawings/Console%20Window%20and%20Image%20Coordinates%202.jpg)
+![Blackboard drawing introducing the image offset vector](./Console%20Window%20and%20Image%20Coordinates%202.jpg)
 
 These variables will hold the offset of our image relative to the console window.
 
@@ -106,7 +106,7 @@ Let's look at the adapted steps in detail.
 
 Previously, we erased the old pointer by just writing a space character, which used the default black background. Now, we need to be smarter. When the pointer moves away, we must restore the original color of the pixel that was underneath it. This color is stored in our `imageData` array. The drawing below explains how we can find the correct color in our one-dimensional `imageData` array using the two-dimensional (X, Y) coordinates of the pointer. The formula is `index = Y * imageWidth + X`.
 
-![Blackboard drawing explaining the computation of pixel indices in the image data array from pixel x/y coordinates and image width](../../Drawings/Image%20Data%20Array%20Indexing.jpg)
+![Blackboard drawing explaining the computation of pixel indices in the image data array from pixel x/y coordinates and image width](./Image%20Data%20Array%20Indexing.jpg)
 
 We use this formula to get the color from the `imageData` array at the pointer's previous location and set it as the `Console.BackgroundColor`.
 
@@ -117,7 +117,7 @@ Console.ForegroundColor = ConsoleColor.White;
 
 Now that the background color is set correctly, we need to write the space character at the right position on the screen. Remember our offset: the pointer's coordinates are relative to the image, not the console window. The drawing below illustrates how we convert from image coordinates to window coordinates by adding the offset.
 
-![Blackboard drawing explaing the computation of image coordinates from window coordinates minus offset vector, and window coordinates from image coordinates plus offset vector](../../Drawings/Console%20Window%20and%20Image%20Coordinates%203.jpg)
+![Blackboard drawing explaing the computation of image coordinates from window coordinates minus offset vector, and window coordinates from image coordinates plus offset vector](./Console%20Window%20and%20Image%20Coordinates%203.jpg)
 
 We add the `imageOffsetX` and `imageOffsetY` to the pointer's `previousX` and `previousY` coordinates to get the correct position in the console window before writing the space character.
 

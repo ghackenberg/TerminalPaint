@@ -1,6 +1,6 @@
 # 📖 Lesson 1: Pointer navigation
 
-*This lesson is based on [Lesson 0: Console basics](../Lesson_00/README.md).*
+*Previous lesson: [Console basics](../Lesson_00/README.md) | Next lesson: [Image representation](../Lesson_02/README.md)*
 
 In this lesson, we will learn how to create a movable pointer in our console application. This will be the first step towards creating a drawing application. We will use the arrow keys to move the pointer around the screen. The screencast below shows what the final result of this lesson will look like.
 

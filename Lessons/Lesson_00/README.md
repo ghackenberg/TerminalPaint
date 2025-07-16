@@ -1,10 +1,12 @@
 # 📖 Lesson 0: Console basics
 
+*Next lesson: [Pointer navigation](../Lesson_01/README.md)*
+
 In this lesson, you will learn the basics of console applications. You will learn how to clear the console, how to paint borders, and how to place a cursor at a specific position.
 
 A console window can be seen as a grid of characters. The size of this grid is given by `Console.WindowWidth` and `Console.WindowHeight`. The position of each character is given by a column and a row, starting from (0, 0) in the top-left corner. The following image illustrates this.
 
-![Illustration of a console window with columns and rows.](../../Drawings/Console%20Window%20Width%20and%20Height.jpg)
+![Illustration of a console window with columns and rows.](./Console%20Window%20Width%20and%20Height.jpg)
 
 The following C# code shows the basic structure of our program. The `Main` method is the entry point of our application. It contains three steps that we will implement: clearing the screen, painting the borders, and painting a pointer.
 
