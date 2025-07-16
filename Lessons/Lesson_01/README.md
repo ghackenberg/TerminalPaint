@@ -54,7 +54,8 @@ int previousY = 1;
 Now for the core of our application: the main loop. This loop will run continuously, waiting for user input and updating the pointer's position accordingly. We use a `while (true)` loop to keep the application running until the user decides to exit. Inside the main loop, we will perform four main actions in each iteration:
 
 ```csharp
-while (true) {
+while (true)
+{
     // Step 5.1: Clear previous pointer location
     // Step 5.2: Paint current pointer location
     // Step 5.3: Update previous pointer location
