@@ -24,7 +24,7 @@ We use the **TerminalPaint** application to teach the following lessons:
 
 - 📖 [**Lesson 0: Console basics**](./Lessons/Lesson_00/README.md) - Working with the *C# Console API*.
 - 📖 [**Lesson 1: Pointer navigation**](./Lessons/Lesson_01//README.md) - Moving the pointer with the arrow keys.
-- 📖 [**Lesson 2: Image representation**](./Lessons/02_Image.md) - Representing images in computer memory.
+- 📖 [**Lesson 2: Image representation**](./Lessons/Lesson_02/README.md) - Representing images in computer memory.
 - 📖 [**Lesson 3: Color selection**](./Lessons/03_Color.md) - Implementing a color picking feature.
 - 📖 [**Lesson 4: Clear operation**](./Lessons/04_Clear.md) - Clearing the entire image.
 - 📖 [**Lesson 5: Store operation**](./Lessons/05_Store.md) - Storing images to and loading images from disk.
