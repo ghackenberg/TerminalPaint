@@ -69,7 +69,6 @@ In the following, we explain Steps 5.1, 5.2, 5.3, and 5.4 in more detail.
 First, we move the console's cursor to the previous location of the pointer using `Console.SetCursorPosition()`. Then, we write a space character (' ') to erase the 'X' that was there.
 
 ```csharp
-// Step 3.1
 Console.SetCursorPosition(previousX, previousY);
 Console.Write(' ');
 ```
