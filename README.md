@@ -5,7 +5,6 @@ The application features a color picker, rectangle and line drawing tools, as we
 The color picker provides access to a small palette of colors supported on a wide range of platforms (e.g. Windows, Linux, and MacOS).
 The line drawing tool uses a simple implementation of the Bresenham algorithm for line discretization.
 And image loading and saving uses a custom image format, which intentionally is not compatible with other tools.
-The application itself is written in C# with .NET Core.
 
 We use this application for teaching programming at the [School of Engineering](https://fh-ooe.at/en/campus-wels) of the [University of Applied Sciences Upper Austria](https://fh-ooe.at/en).
 According to our experience, the application is simple enough to be fully unterstood even by beginners, but interesting enough to motivate students to work on the assigments.
