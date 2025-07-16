@@ -20,7 +20,7 @@ namespace TerminalPaint {
 }
 ```
 
-In the following, we first TODO before TODO
+In the following, we will explain these three steps in detail.
 
 ## Step 1: Clear screen
 
