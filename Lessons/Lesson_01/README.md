@@ -184,25 +184,25 @@ continue;
 ```
 ## Step 6: Say goodbye
 
-TODO
+After the user presses the Escape key, the main loop terminates, and the program proceeds to this final step. Before we exit, it's good practice to clean up the console. First, we'll reset the console's background and foreground colors to their default values. This ensures that the user's terminal is not left with the colors we used for the border.
 
 ```csharp
 Console.BackgroundColor = ConsoleColor.Black;
 Console.ForegroundColor = ConsoleColor.White;
 ```
 
-TODO
+Next, we clear the entire console window using `Console.Clear()`. This will remove the border we drew and any leftover 'X' from our pointer, leaving a clean screen.
 
 ```csharp
 Console.Clear();
 ```
 
-TODO
+Finally, we print a friendly "Good bye!" message to the user to let them know the program has ended successfully.
 
 ```csharp
 Console.WriteLine("Good bye!");
 ```
 
-TODO
+The screenshot below shows the final output. After you press Escape, the screen will be cleared, and you will only see the "Good bye!" message at the top of the console.
 
 ![Screenshot of the console window showing the goodbye message after exiting the main loop](./Screenshot.png)
