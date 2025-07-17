@@ -17,19 +17,12 @@
 
         static void Main(string[] args) // revised in this lesson!
         {
-            PaintFrame();
+            InitializeInterfacef();
             MainLoop(); // added in this lesson!
             SayGoodbye(); // added in this lesson!
         }
 
-        // - PHASES
-
-        static void PaintFrame()
-        {
-            ClearScreen();
-            PaintBorders();
-            UpdateImagePixel(pointerX, pointerY);
-        }
+        // - LOOPS
 
         static void MainLoop() // added in this lesson!
         {
@@ -62,12 +55,6 @@
                     continue;
                 }
             }
-        }
-
-        static void SayGoodbye() // added in this lesson!
-        {
-            ClearScreen();
-            Console.WriteLine("Good bye!");
         }
 
         // - TOOLS
@@ -103,6 +90,22 @@
         }
 
         // - HELPERS
+
+        static void InitializeInterfacef()
+        {
+            ClearScreen();
+
+            PaintBorders();
+
+            UpdateImagePixel(pointerX, pointerY);
+        }
+
+        static void SayGoodbye() // added in this lesson!
+        {
+            ClearScreen();
+
+            Console.WriteLine("Good bye!");
+        }
 
         static void ClearScreen()
         {

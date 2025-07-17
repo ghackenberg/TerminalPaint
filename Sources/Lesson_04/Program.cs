@@ -29,31 +29,12 @@
         static void Main(string[] args)
         {
             InitializeImage();
-            PaintFrame();
+            InitializeInterface();
             MainLoop();
             SayGoodbye();
         }
 
-        // - PHASES
-
-        static void InitializeImage()
-        {
-            for (int x = 0; x < imageWidth; x++)
-            {
-                for (int y = 0; y < imageHeight; y++)
-                {
-                    SetImagePixelBackgroundColor(x, y, ConsoleColor.Black);
-                }
-            }
-        }
-
-        static void PaintFrame()
-        {
-            ClearScreen();
-            PaintBorders();
-            PaintColors();
-            UpdateImagePixel(pointerX, pointerY);
-        }
+        // - LOOPS
 
         static void MainLoop() // revised in this lesson!
         {
@@ -102,12 +83,6 @@
                     continue;
                 }
             }
-        }
-
-        static void SayGoodbye()
-        {
-            ClearScreen();
-            Console.WriteLine("Good bye!");
         }
 
         // - TOOLS
@@ -185,10 +160,36 @@
                 }
             }
 
-            Console.SetCursorPosition(imageOffsetX + pointerX + 1, imageOffsetY + pointerY);
+            SetCursorPosition();
         }
 
         // - HELPERS
+
+        static void InitializeImage()
+        {
+            for (int x = 0; x < imageWidth; x++)
+            {
+                for (int y = 0; y < imageHeight; y++)
+                {
+                    SetImagePixelBackgroundColor(x, y, ConsoleColor.Black);
+                }
+            }
+        }
+
+        static void InitializeInterface()
+        {
+            ClearScreen();
+            PaintBorders();
+            PaintColors();
+            UpdateImagePixel(pointerX, pointerY);
+        }
+
+        static void SayGoodbye()
+        {
+            ClearScreen();
+
+            Console.WriteLine("Good bye!");
+        }
 
         static void ClearScreen()
         {
@@ -239,6 +240,11 @@
             {
                 UpdateColorPixel(colorIndex);
             }
+        }
+
+        static void SetCursorPosition() // added in this lesson!
+        {
+            Console.SetCursorPosition(imageOffsetX + pointerX + 1, imageOffsetY + pointerY);
         }
 
         static void UpdateImagePixel(int x, int y)

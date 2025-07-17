@@ -29,31 +29,12 @@
         static void Main(string[] args)
         {
             InitializeImage();
-            PaintFrame();
+            InitializeInterface();
             MainLoop();
             SayGoodbye();
         }
 
-        // - PHASES
-
-        static void InitializeImage()
-        {
-            for (int x = 0; x < imageWidth; x++)
-            {
-                for (int y = 0; y < imageHeight; y++)
-                {
-                    SetImagePixelBackgroundColor(x, y, ConsoleColor.Black);
-                }
-            }
-        }
-
-        static void PaintFrame() // revised in this lesson!
-        {
-            ClearScreen();
-            PaintBorders();
-            PaintColors(); // added in this lesson!
-            UpdateImagePixel(pointerX, pointerY);
-        }
+        // - LOOPS
 
         static void MainLoop() // revised in this lesson!
         {
@@ -98,12 +79,6 @@
                     continue;
                 }
             }
-        }
-
-        static void SayGoodbye()
-        {
-            ClearScreen();
-            Console.WriteLine("Good bye!");
         }
 
         // - TOOLS
@@ -170,6 +145,34 @@
         }
 
         // - HELPERS
+
+        static void InitializeImage()
+        {
+            for (int x = 0; x < imageWidth; x++)
+            {
+                for (int y = 0; y < imageHeight; y++)
+                {
+                    SetImagePixelBackgroundColor(x, y, ConsoleColor.Black);
+                }
+            }
+        }
+
+        static void InitializeInterface() // revised in this lesson!
+        {
+            ClearScreen();
+
+            PaintBorders();
+            PaintColors(); // added in this lesson!
+
+            UpdateImagePixel(pointerX, pointerY);
+        }
+
+        static void SayGoodbye()
+        {
+            ClearScreen();
+
+            Console.WriteLine("Good bye!");
+        }
 
         static void ClearScreen()
         {

@@ -41,31 +41,12 @@
         static void Main(string[] args)
         {
             InitializeImage();
-            PaintFrame();
+            InitializeInterface();
             MainLoop();
             SayGoodbye();
         }
 
-        // - PHASES
-
-        static void InitializeImage()
-        {
-            for (int x = 0; x < imageWidth; x++)
-            {
-                for (int y = 0; y < imageHeight; y++)
-                {
-                    SetImagePixelBackgroundColor(x, y, ConsoleColor.Black);
-                }
-            }
-        }
-
-        static void PaintFrame()
-        {
-            ClearScreen();
-            PaintBorders();
-            PaintColors();
-            UpdateImagePixel(pointerX, pointerY);
-        }
+        // - LOOPS
 
         static void MainLoop() // revised in this lesson!
         {
@@ -128,10 +109,104 @@
             }
         }
 
-        static void SayGoodbye()
+        static void RectangleLoop()
         {
-            ClearScreen();
-            Console.WriteLine("Good bye!");
+            // Remember rectangle start location
+
+            rectangleStartX = pointerX;
+            rectangleStartY = pointerY;
+
+            // Initialize rectangle min/max
+
+            rectangleMinX = pointerX;
+            rectangleMinY = pointerY;
+
+            rectangleMaxX = pointerX;
+            rectangleMaxY = pointerY;
+
+            // Enter rectangle loop
+
+            while (true)
+            {
+                ConsoleKeyInfo input = Console.ReadKey(true);
+
+                if (input.Key == ConsoleKey.UpArrow)
+                {
+                    MoveRectanglePointer(0, -1);
+                }
+                else if (input.Key == ConsoleKey.DownArrow)
+                {
+                    MoveRectanglePointer(0, +1);
+                }
+                else if (input.Key == ConsoleKey.LeftArrow)
+                {
+                    MoveRectanglePointer(-1, 0);
+                }
+                else if (input.Key == ConsoleKey.RightArrow)
+                {
+                    MoveRectanglePointer(+1, 0);
+                }
+                else if (input.Key == ConsoleKey.Enter)
+                {
+                    CommitRectangle();
+                    break;
+                }
+                else if (input.Key == ConsoleKey.Escape)
+                {
+                    CancelRectangle();
+                    break;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+        }
+
+        static void LineLoop() // added in this lesson!
+        {
+            // Remember line start location
+
+            lineStartX = pointerX;
+            lineStartY = pointerY;
+
+            // Enter line loop
+
+            while (true)
+            {
+                ConsoleKeyInfo input = Console.ReadKey(true);
+
+                if (input.Key == ConsoleKey.UpArrow)
+                {
+                    MoveLinePointer(0, -1);
+                }
+                else if (input.Key == ConsoleKey.DownArrow)
+                {
+                    MoveLinePointer(0, +1);
+                }
+                else if (input.Key == ConsoleKey.LeftArrow)
+                {
+                    MoveLinePointer(-1, 0);
+                }
+                else if (input.Key == ConsoleKey.RightArrow)
+                {
+                    MoveLinePointer(+1, 0);
+                }
+                else if (input.Key == ConsoleKey.Enter)
+                {
+                    CommitLine();
+                    break;
+                }
+                else if (input.Key == ConsoleKey.Escape)
+                {
+                    CancelLine();
+                    break;
+                }
+                else
+                {
+                    continue;
+                }
+            }
         }
 
         // - TOOLS
@@ -209,7 +284,7 @@
                 }
             }
 
-            Console.SetCursorPosition(imageOffsetX + pointerX + 1, imageOffsetY + pointerY);
+            SetCursorPosition();
         }
 
         static void Fill()
@@ -220,61 +295,7 @@
             {
                 FillRecursive(pointerX, pointerY, originalColor);
 
-                Console.SetCursorPosition(imageOffsetX + pointerX + 1, imageOffsetY + pointerY);
-            }
-        }
-
-        static void RectangleLoop()
-        {
-            // Remember rectangle start location
-
-            rectangleStartX = pointerX;
-            rectangleStartY = pointerY;
-
-            // Initialize rectangle min/max
-
-            rectangleMinX = pointerX;
-            rectangleMinY = pointerY;
-
-            rectangleMaxX = pointerX;
-            rectangleMaxY = pointerY;
-
-            // Enter rectangle loop
-
-            while (true)
-            {
-                ConsoleKeyInfo input = Console.ReadKey(true);
-
-                if (input.Key == ConsoleKey.UpArrow)
-                {
-                    MoveRectanglePointer(0, -1);
-                }
-                else if (input.Key == ConsoleKey.DownArrow)
-                {
-                    MoveRectanglePointer(0, +1);
-                }
-                else if (input.Key == ConsoleKey.LeftArrow)
-                {
-                    MoveRectanglePointer(-1, 0);
-                }
-                else if (input.Key == ConsoleKey.RightArrow)
-                {
-                    MoveRectanglePointer(+1, 0);
-                }
-                else if (input.Key == ConsoleKey.Enter)
-                {
-                    CommitRectangle();
-                    break;
-                }
-                else if (input.Key == ConsoleKey.Escape)
-                {
-                    CancelRectangle();
-                    break;
-                }
-                else
-                {
-                    continue;
-                }
+                SetCursorPosition();
             }
         }
 
@@ -340,7 +361,7 @@
 
             // Update cursor position
 
-            Console.SetCursorPosition(imageOffsetX + pointerX + 1, imageOffsetY + pointerY);
+            SetCursorPosition();
         }
 
         static void CommitRectangle()
@@ -380,7 +401,7 @@
 
             // Set cursor position
 
-            Console.SetCursorPosition(imageOffsetX + pointerX + 1, imageOffsetY + pointerY);
+            SetCursorPosition();
         }
 
         static void CancelRectangle()
@@ -422,53 +443,7 @@
 
             // Set cursor position
 
-            Console.SetCursorPosition(imageOffsetX + pointerX + 1, imageOffsetY + pointerY);
-        }
-
-        static void LineLoop() // added in this lesson!
-        {
-            // Remember line start location
-
-            lineStartX = pointerX;
-            lineStartY = pointerY;
-
-            // Enter line loop
-
-            while (true)
-            {
-                ConsoleKeyInfo input = Console.ReadKey(true);
-
-                if (input.Key == ConsoleKey.UpArrow)
-                {
-                    MoveLinePointer(0, -1);
-                }
-                else if (input.Key == ConsoleKey.DownArrow)
-                {
-                    MoveLinePointer(0, +1);
-                }
-                else if (input.Key == ConsoleKey.LeftArrow)
-                {
-                    MoveLinePointer(-1, 0);
-                }
-                else if (input.Key == ConsoleKey.RightArrow)
-                {
-                    MoveLinePointer(+1, 0);
-                }
-                else if (input.Key == ConsoleKey.Enter)
-                {
-                    CommitLine();
-                    break;
-                }
-                else if (input.Key == ConsoleKey.Escape)
-                {
-                    CancelLine();
-                    break;
-                }
-                else
-                {
-                    continue;
-                }
-            }
+            SetCursorPosition();
         }
 
         static void MoveLinePointer(int dx, int dy) // added in this lesson!
@@ -496,7 +471,7 @@
 
             // Set cursor position
 
-            Console.SetCursorPosition(imageOffsetX + pointerX + 1, imageOffsetY + pointerY);
+            SetCursorPosition();
         }
 
         static void CommitLine() // added in this lesson!
@@ -515,7 +490,7 @@
 
             // Set cursor position
 
-            Console.SetCursorPosition(imageOffsetX + pointerX + 1, imageOffsetY + pointerY);
+            SetCursorPosition();
         }
 
         static void CancelLine() // added in this lesson!
@@ -534,10 +509,38 @@
 
             // Set cursor position
 
-            Console.SetCursorPosition(imageOffsetX + pointerX + 1, imageOffsetY + pointerY);
+            SetCursorPosition();
         }
 
         // - HELPERS
+
+        static void InitializeImage()
+        {
+            for (int x = 0; x < imageWidth; x++)
+            {
+                for (int y = 0; y < imageHeight; y++)
+                {
+                    SetImagePixelBackgroundColor(x, y, ConsoleColor.Black);
+                }
+            }
+        }
+
+        static void InitializeInterface()
+        {
+            ClearScreen();
+
+            PaintBorders();
+            PaintColors();
+
+            UpdateImagePixel(pointerX, pointerY);
+        }
+
+        static void SayGoodbye()
+        {
+            ClearScreen();
+
+            Console.WriteLine("Good bye!");
+        }
 
         static void ClearScreen()
         {
@@ -588,6 +591,11 @@
             {
                 UpdateColorPixel(colorIndex);
             }
+        }
+
+        static void SetCursorPosition()
+        {
+            Console.SetCursorPosition(imageOffsetX + pointerX + 1, imageOffsetY + pointerY);
         }
 
         static void FillRecursive(int x, int y, ConsoleColor originalColor)

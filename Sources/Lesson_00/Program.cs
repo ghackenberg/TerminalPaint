@@ -17,19 +17,21 @@
 
         static void Main(string[] args)
         {
-            PaintFrame();
+            InitializeInterface();
         }
 
-        // - PHASES
+        // - LOOPS
 
-        static void PaintFrame()
+        // - TOOLS
+
+        // - HELPERS
+
+        static void InitializeInterface()
         {
             ClearScreen();
             PaintBorders();
             UpdateImagePixel(pointerX, pointerY);
         }
-
-        // - HELPERS
 
         static void ClearScreen()
         {
