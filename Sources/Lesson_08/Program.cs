@@ -1,4 +1,4 @@
-﻿namespace Lesson_07
+﻿namespace Lesson_08
 {
     internal class Program
     {
@@ -33,8 +33,8 @@
         static int rectangleMaxX = -1;
         static int rectangleMaxY = -1;
 
-        static int lineStartX = -1; // added in this lesson!
-        static int lineStartY = -1; // added in this lesson!
+        static int lineStartX = -1;
+        static int lineStartY = -1;
 
         // METHODS
 
@@ -113,9 +113,17 @@
                 {
                     RectangleLoop();
                 }
-                else if (input.Key == ConsoleKey.L) // added in this lesson!
+                else if (input.Key == ConsoleKey.L)
                 {
                     LineLoop();
+                }
+                else if (input.Key == ConsoleKey.S) // added in this lesson!
+                {
+                    Save();
+                }
+                else if (input.Key == ConsoleKey.O) // added in this lesson!
+                {
+                    Open();
                 }
                 else if (input.Key == ConsoleKey.Escape)
                 {
@@ -425,7 +433,7 @@
             Console.SetCursorPosition(imageOffsetX + pointerX + 1, imageOffsetY + pointerY);
         }
 
-        static void LineLoop() // added in this lesson!
+        static void LineLoop()
         {
             // Remember line start location
 
@@ -471,7 +479,7 @@
             }
         }
 
-        static void MoveLinePointer(int dx, int dy) // added in this lesson!
+        static void MoveLinePointer(int dx, int dy)
         {
             // Remember previous pointer location
 
@@ -499,7 +507,7 @@
             Console.SetCursorPosition(imageOffsetX + pointerX + 1, imageOffsetY + pointerY);
         }
 
-        static void CommitLine() // added in this lesson!
+        static void CommitLine()
         {
             int previousLineStartX = lineStartX;
             int previousLineStartY = lineStartY;
@@ -518,7 +526,7 @@
             Console.SetCursorPosition(imageOffsetX + pointerX + 1, imageOffsetY + pointerY);
         }
 
-        static void CancelLine() // added in this lesson!
+        static void CancelLine()
         {
             int previousLineStartX = lineStartX;
             int previousLineStartY = lineStartY;
@@ -535,6 +543,56 @@
             // Set cursor position
 
             Console.SetCursorPosition(imageOffsetX + pointerX + 1, imageOffsetY + pointerY);
+        }
+
+        static void Save() // added in this lesson!
+        {
+            try
+            {
+                FileStream stream = new FileStream("image.tpi", FileMode.Create);
+
+                for (int y = 0; y < imageHeight; y++)
+                {
+                    for (int x = 0; x < imageWidth; x++)
+                    {
+                        ConsoleColor color = GetImagePixelBackgroundColor(x, y);
+
+                        stream.WriteByte((byte)color);
+                    }
+                }
+
+                stream.Close();
+            }
+            catch (UnauthorizedAccessException)
+            {
+                // ignore
+            }
+        }
+
+        static void Open() // added in this lesson!
+        {
+            try
+            {
+                FileStream stream = new FileStream("image.tpi", FileMode.Open);
+
+                for (int y = 0; y < imageHeight; y++)
+                {
+                    for (int x = 0; x < imageWidth; x++)
+                    {
+                        ConsoleColor color = (ConsoleColor)stream.ReadByte();
+
+                        SetImagePixelBackgroundColor(x, y, color);
+
+                        UpdateImagePixel(x, y);
+                    }
+                }
+
+                stream.Close();
+            }
+            catch (FileNotFoundException)
+            {
+                // ignore
+            }
         }
 
         // - HELPERS
@@ -609,7 +667,7 @@
             }
         }
 
-        static void DrawLine(int startX, int startY, int endX, int endY, int mode = 0) // added in this lesson!
+        static void DrawLine(int startX, int startY, int endX, int endY, int mode = 0)
         {
             // Compute line delta
 
@@ -631,8 +689,8 @@
 
             for (double pixel = 0; pixel <= linePixelCount + 0.1; pixel++)
             {
-                int x = startX + (linePixelCount > 0 ? (int) Math.Round(lineDeltaX * pixel / linePixelCount) : 0);
-                int y = startY + (linePixelCount > 0 ? (int) Math.Round(lineDeltaY * pixel / linePixelCount) : 0);
+                int x = startX + (linePixelCount > 0 ? (int)Math.Round(lineDeltaX * pixel / linePixelCount) : 0);
+                int y = startY + (linePixelCount > 0 ? (int)Math.Round(lineDeltaY * pixel / linePixelCount) : 0);
 
                 Console.SetCursorPosition(imageOffsetX + x, imageOffsetY + y);
 
