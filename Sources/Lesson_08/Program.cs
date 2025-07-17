@@ -119,11 +119,11 @@
                 }
                 else if (input.Key == ConsoleKey.S) // added in this lesson!
                 {
-                    Save();
+                    SaveLoop();
                 }
                 else if (input.Key == ConsoleKey.O) // added in this lesson!
                 {
-                    Open();
+                    OpenLoop();
                 }
                 else if (input.Key == ConsoleKey.Escape)
                 {
@@ -545,54 +545,132 @@
             Console.SetCursorPosition(imageOffsetX + pointerX + 1, imageOffsetY + pointerY);
         }
 
-        static void Save() // added in this lesson!
+        static void SaveLoop() // added in this lesson!
         {
-            try
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+
+            Console.Clear();
+            Console.Write("Please enter file name (press ENTER to cancel): ");
+
+            while (true)
             {
-                FileStream stream = new FileStream("image.tpi", FileMode.Create);
+                string? fileName = Console.ReadLine();
 
-                for (int y = 0; y < imageHeight; y++)
+                if (fileName != null && fileName.Length > 0)
                 {
-                    for (int x = 0; x < imageWidth; x++)
+                    try
                     {
-                        ConsoleColor color = GetImagePixelBackgroundColor(x, y);
+                        FileStream stream = new FileStream(fileName, FileMode.Create);
 
-                        stream.WriteByte((byte)color);
+                        for (int y = 0; y < imageHeight; y++)
+                        {
+                            for (int x = 0; x < imageWidth; x++)
+                            {
+                                ConsoleColor color = GetImagePixelBackgroundColor(x, y);
+
+                                stream.WriteByte((byte)color);
+                            }
+                        }
+
+                        stream.Close();
+
+                        break;
+                    }
+                    catch (UnauthorizedAccessException)
+                    {
+                        Console.Clear();
+                        Console.Write("Failed to write file. Please enter file name (press ENTER to cancel): ");
                     }
                 }
+                else
+                {
+                    break;
+                }
+            }
 
-                stream.Close();
-            }
-            catch (UnauthorizedAccessException)
+            // Restore main view
+
+            Console.Clear();
+
+            PaintBorders();
+            PaintColors();
+
+            for (int y = 0; y < imageHeight; y++)
             {
-                // ignore
+                for (int x = 0; x < imageWidth; x++)
+                {
+                    UpdateImagePixel(x, y);
+                }
             }
+
+            // Set cursor position
+
+            Console.SetCursorPosition(imageOffsetX + pointerX + 1, imageOffsetY + pointerY);
         }
 
-        static void Open() // added in this lesson!
+        static void OpenLoop() // added in this lesson!
         {
-            try
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+
+            Console.Clear();
+            Console.Write("Please enter file name (press ENTER to cancel): ");
+
+            while (true)
             {
-                FileStream stream = new FileStream("image.tpi", FileMode.Open);
+                string? fileName = Console.ReadLine();
 
-                for (int y = 0; y < imageHeight; y++)
+                if (fileName != null && fileName.Length > 0)
                 {
-                    for (int x = 0; x < imageWidth; x++)
+                    try
                     {
-                        ConsoleColor color = (ConsoleColor)stream.ReadByte();
+                        FileStream stream = new FileStream(fileName, FileMode.Open);
 
-                        SetImagePixelBackgroundColor(x, y, color);
+                        for (int y = 0; y < imageHeight; y++)
+                        {
+                            for (int x = 0; x < imageWidth; x++)
+                            {
+                                ConsoleColor color = (ConsoleColor)stream.ReadByte();
 
-                        UpdateImagePixel(x, y);
+                                SetImagePixelBackgroundColor(x, y, color);
+                            }
+                        }
+
+                        stream.Close();
+
+                        break;
+                    }
+                    catch (FileNotFoundException)
+                    {
+                        Console.Clear();
+                        Console.Write("Failed to open file. Please enter file name (press ENTER to cancel): ");
                     }
                 }
+                else
+                {
+                    break;
+                }
+            }
 
-                stream.Close();
-            }
-            catch (FileNotFoundException)
+            // Restore main view
+
+            Console.Clear();
+
+            PaintBorders();
+            PaintColors();
+
+            for (int y = 0; y < imageHeight; y++)
             {
-                // ignore
+                for (int x = 0; x < imageWidth; x++)
+                {
+                    UpdateImagePixel(x, y);
+                }
             }
+
+            // Set cursor position
+
+            Console.SetCursorPosition(imageOffsetX + pointerX + 1, imageOffsetY + pointerY);
         }
 
         // - HELPERS
