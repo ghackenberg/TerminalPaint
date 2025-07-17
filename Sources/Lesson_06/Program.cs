@@ -1,4 +1,4 @@
-﻿namespace Lesson_05
+﻿namespace Lesson_06
 {
     internal class Program
     {
@@ -23,6 +23,15 @@
 
         static int pointerX = imageWidth / 2;
         static int pointerY = imageHeight / 2;
+
+        static int rectangleStartX = -1; // added in this lesson!
+        static int rectangleStartY = -1; // added in this lesson!
+
+        static int rectangleMinX = -1; // added in this lesson!
+        static int rectangleMinY = -1; // added in this lesson!
+
+        static int rectangleMaxX = -1; // added in this lesson!
+        static int rectangleMaxY = -1; // added in this lesson!
 
         // METHODS
 
@@ -93,9 +102,13 @@
                 {
                     Clear();
                 }
-                else if (input.Key == ConsoleKey.F) // added in this lesson!
+                else if (input.Key == ConsoleKey.F)
                 {
                     Fill();
+                }
+                else if (input.Key == ConsoleKey.R) // added in this lesson!
+                {
+                    RectangleLoop();
                 }
                 else if (input.Key == ConsoleKey.Escape)
                 {
@@ -192,7 +205,7 @@
             Console.SetCursorPosition(imageOffsetX + pointerX + 1, imageOffsetY + pointerY);
         }
 
-        static void Fill() // added in this lesson!
+        static void Fill()
         {
             ConsoleColor originalColor = GetImagePixelBackgroundColor(pointerX, pointerY);
 
@@ -202,6 +215,207 @@
 
                 Console.SetCursorPosition(imageOffsetX + pointerX + 1, imageOffsetY + pointerY);
             }
+        }
+
+        static void RectangleLoop() // added in this lesson!
+        {
+            // Remember rectangle start location
+
+            rectangleStartX = pointerX;
+            rectangleStartY = pointerY;
+
+            // Initialize rectangle min/max
+
+            rectangleMinX = pointerX;
+            rectangleMinY = pointerY;
+
+            rectangleMaxX = pointerX;
+            rectangleMaxY = pointerY;
+
+            // Enter rectangle loop
+
+            while (true)
+            {
+                ConsoleKeyInfo input = Console.ReadKey(true);
+
+                if (input.Key == ConsoleKey.UpArrow)
+                {
+                    MoveRectanglePointer(0, -1);
+                }
+                else if (input.Key == ConsoleKey.DownArrow)
+                {
+                    MoveRectanglePointer(0, +1);
+                }
+                else if (input.Key == ConsoleKey.LeftArrow)
+                {
+                    MoveRectanglePointer(-1, 0);
+                }
+                else if (input.Key == ConsoleKey.RightArrow)
+                {
+                    MoveRectanglePointer(+1, 0);
+                }
+                else if (input.Key == ConsoleKey.Enter)
+                {
+                    CommitRectangle();
+                    break;
+                }
+                else if (input.Key == ConsoleKey.Escape)
+                {
+                    CancelRectangle();
+                    break;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+        }
+
+        static void MoveRectanglePointer(int dx, int dy) // added in this lesson!
+        {
+            // Remember previous pointer location
+
+            int previousX = pointerX;
+            int previousY = pointerY;
+
+            // Update current pointer location
+
+            if (pointerX + dx >= 0 && pointerX + dx < imageWidth)
+            {
+                pointerX += dx;
+            }
+            if (pointerY + dy >= 0 && pointerY + dy < imageHeight)
+            {
+                pointerY += dy;
+            }
+
+            // Remember previous min/max
+
+            int previousRectangleMinX = rectangleMinX;
+            int previousRectangleMinY = rectangleMinY;
+
+            int previousRectangleMaxX = rectangleMaxX;
+            int previousRectangleMaxY = rectangleMaxY;
+
+            // Update rectangle min/max
+
+            rectangleMinX = Math.Min(rectangleStartX, pointerX);
+            rectangleMinY = Math.Min(rectangleStartY, pointerY);
+
+            rectangleMaxX = Math.Max(rectangleStartX, pointerX);
+            rectangleMaxY = Math.Max(rectangleStartY, pointerY);
+
+            // Redraw rectangle preview
+
+            if (previousX != pointerX)
+            {
+                for (int y = previousRectangleMinY; y <= previousRectangleMaxY; y++)
+                {
+                    UpdateImagePixel(previousX, y);
+                }
+                for (int y = rectangleMinY; y <= rectangleMaxY; y++)
+                {
+                    UpdateImagePixel(pointerX, y);
+                }
+            }
+
+            if (previousY != pointerY)
+            {
+                for (int x = previousRectangleMinX; x <= previousRectangleMaxX; x++)
+                {
+                    UpdateImagePixel(x, previousY);
+                }
+                for (int x = rectangleMinX; x <= rectangleMaxX; x++)
+                {
+                    UpdateImagePixel(x, pointerY);
+                }
+            }
+
+            // Update cursor position
+
+            Console.SetCursorPosition(imageOffsetX + pointerX + 1, imageOffsetY + pointerY);
+        }
+
+        static void CommitRectangle() // added in this lesson!
+        {
+            // Reset rectangle start location
+
+            rectangleStartX = -1;
+            rectangleStartY = -1;
+
+            // Remember previous min/max
+
+            int previousRectangleMinX = rectangleMinX;
+            int previousRectangleMinY = rectangleMinY;
+
+            int previousRectangleMaxX = rectangleMaxX;
+            int previousRectangleMaxY = rectangleMaxY;
+
+            // Reset rectangle min/max
+
+            rectangleMinX = -1;
+            rectangleMinY = -1;
+
+            rectangleMaxX = -1;
+            rectangleMaxY = -1;
+
+            // Paint rectangle
+
+            for (int y = previousRectangleMinY; y <= previousRectangleMaxY; y++)
+            {
+                for (int x = previousRectangleMinX; x <= previousRectangleMaxX; x++)
+                {
+                    SetImagePixelBackgroundColor(x, y, colors[currentColorIndex]);
+
+                    UpdateImagePixel(x, y);
+                }
+            }
+
+            // Set cursor position
+
+            Console.SetCursorPosition(imageOffsetX + pointerX + 1, imageOffsetY + pointerY);
+        }
+
+        static void CancelRectangle() // added in this lesson!
+        {
+            // Reset rectangle start location
+
+            rectangleStartX = -1;
+            rectangleStartY = -1;
+
+            // Remember previous min/max
+
+            int previousRectangleMinX = rectangleMinX;
+            int previousRectangleMinY = rectangleMinY;
+
+            int previousRectangleMaxX = rectangleMaxX;
+            int previousRectangleMaxY = rectangleMaxY;
+
+            // Reset rectangle min/max
+
+            rectangleMinX = -1;
+            rectangleMinY = -1;
+
+            rectangleMaxX = -1;
+            rectangleMaxY = -1;
+
+            // Clear rectangle preview
+
+            for (int x = previousRectangleMinX; x <= previousRectangleMaxX; x++)
+            {
+                UpdateImagePixel(x, previousRectangleMinY);
+                UpdateImagePixel(x, previousRectangleMaxY);
+            }
+
+            for (int y = previousRectangleMinY + 1; y < previousRectangleMaxY; y++)
+            {
+                UpdateImagePixel(previousRectangleMinX, y);
+                UpdateImagePixel(previousRectangleMaxX, y);
+            }
+
+            // Set cursor position
+
+            Console.SetCursorPosition(imageOffsetX + pointerX + 1, imageOffsetY + pointerY);
         }
 
         // - HELPERS
@@ -257,7 +471,7 @@
             }
         }
 
-        static void FillRecursive(int x, int y, ConsoleColor originalColor) // added in this lesson!
+        static void FillRecursive(int x, int y, ConsoleColor originalColor)
         {
             if (x >= 0 && y >= 0 && x < imageWidth && y < imageHeight)
             {
@@ -313,11 +527,27 @@
             return ConsoleColor.White;
         }
 
-        static char GetImagePixelSymbol(int x, int y)
+        static char GetImagePixelSymbol(int x, int y) // revised in this lesson!
         {
             if (x == pointerX && y == pointerY)
             {
                 return 'X';
+            }
+            else if (x == rectangleStartX && y == rectangleStartY) // added in this lesson!
+            {
+                return 'O';
+            }
+            else if ((x == rectangleStartX && y == pointerY) || (x == pointerX && y == rectangleStartY)) // added in this lesson!
+            {
+                return '+';
+            }
+            else if ((x == rectangleStartX || x == pointerX) && y >= rectangleMinY && y <= rectangleMaxY) // added in this lesson!
+            {
+                return '|';
+            }
+            else if (x >= rectangleMinX && x <= rectangleMaxX && (y == rectangleStartY || y == pointerY)) // added in this lesson!
+            {
+                return '-';
             }
             else
             {
