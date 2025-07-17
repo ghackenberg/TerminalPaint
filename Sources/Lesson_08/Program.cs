@@ -119,11 +119,11 @@
                 }
                 else if (input.Key == ConsoleKey.S) // added in this lesson!
                 {
-                    SaveLoop();
+                    Save();
                 }
                 else if (input.Key == ConsoleKey.O) // added in this lesson!
                 {
-                    OpenLoop();
+                    Open();
                 }
                 else if (input.Key == ConsoleKey.Escape)
                 {
@@ -545,7 +545,7 @@
             Console.SetCursorPosition(imageOffsetX + pointerX + 1, imageOffsetY + pointerY);
         }
 
-        static void SaveLoop() // added in this lesson!
+        static void Save() // added in this lesson!
         {
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.White;
@@ -609,7 +609,7 @@
             Console.SetCursorPosition(imageOffsetX + pointerX + 1, imageOffsetY + pointerY);
         }
 
-        static void OpenLoop() // added in this lesson!
+        static void Open() // added in this lesson!
         {
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.White;
