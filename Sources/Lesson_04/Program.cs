@@ -1,15 +1,15 @@
-﻿namespace Lesson_03
+﻿namespace Lesson_04
 {
     internal class Program
     {
         // FIELDS
 
-        static readonly ConsoleColor[] colors = // added in this lesson!
+        static readonly ConsoleColor[] colors =
         {
             ConsoleColor.Red, ConsoleColor.Green, ConsoleColor.Blue
         };
 
-        static int currentColorIndex = 0; // added in this lesson!
+        static int currentColorIndex = 0;
 
         static readonly int imageOffsetX = 1;
         static readonly int imageOffsetY = 1;
@@ -47,11 +47,11 @@
             }
         }
 
-        static void PaintFrame() // revised in this lesson!
+        static void PaintFrame()
         {
             ClearScreen();
             PaintBorders();
-            PaintColors(); // added in this lesson!
+            PaintColors();
             UpdateImagePixel(pointerX, pointerY, 'X');
         }
 
@@ -81,13 +81,17 @@
                 {
                     Stroke();
                 }
-                else if (input.Key == ConsoleKey.PageUp) // added in this lesson!
+                else if (input.Key == ConsoleKey.PageUp)
                 {
                     ChangeColor(-1);
                 }
-                else if (input.Key == ConsoleKey.PageDown) // added in this lesson!
+                else if (input.Key == ConsoleKey.PageDown)
                 {
                     ChangeColor(+1);
+                }
+                else if (input.Key == ConsoleKey.C) // added in this lesson!
+                {
+                    Clear();
                 }
                 else if (input.Key == ConsoleKey.Escape)
                 {
@@ -124,16 +128,16 @@
             UpdateImagePixel(pointerX, pointerY, 'X');
         }
 
-        static void Stroke() // revised in this lesson!
+        static void Stroke()
         {
-            ConsoleColor color = colors[currentColorIndex]; // revised in this lesson!
+            ConsoleColor color = colors[currentColorIndex];
 
             SetImagePixelBackgroundColor(pointerX, pointerY, color);
 
             UpdateImagePixel(pointerX, pointerY, 'X');
         }
 
-        static void ChangeColor(int d) // added in this lesson!
+        static void ChangeColor(int d)
         {
             if (currentColorIndex + d >= 0 && currentColorIndex + d < colors.Length)
             {
@@ -142,6 +146,26 @@
                 currentColorIndex += d;
 
                 UpdateColorPixel(currentColorIndex, 'X');
+            }
+        }
+
+        static void Clear() // added in this lesson!
+        {
+            for (int y = 0; y < imageHeight; y++)
+            {
+                for (int x = 0; x < imageWidth; x++)
+                {
+                    SetImagePixelBackgroundColor(x, y, ConsoleColor.Black);
+
+                    if (x == pointerX && y == pointerY)
+                    {
+                        UpdateImagePixel(x, y, 'X');
+                    }
+                    else
+                    {
+                        UpdateImagePixel(x, y, ' ');
+                    }
+                }
             }
         }
 
@@ -155,13 +179,13 @@
             Console.Clear();
         }
 
-        static void PaintBorders() // revised in this lesson!
+        static void PaintBorders()
         {
             PaintHorizontalBorder(0);
             PaintHorizontalBorder(Console.WindowHeight - 1);
 
             PaintVerticalBorder(0);
-            PaintVerticalBorder(Console.WindowWidth - 3); // added in this lesson!
+            PaintVerticalBorder(Console.WindowWidth - 3);
             PaintVerticalBorder(Console.WindowWidth - 1);
         }
 
@@ -189,8 +213,8 @@
                 Console.Write(' ');
             }
         }
-        
-        static void PaintColors() // added in this lesson!
+
+        static void PaintColors()
         {
             for (int colorIndex = 0; colorIndex < colors.Length; colorIndex++)
             {
@@ -223,7 +247,7 @@
             Console.Write(symbol);
         }
 
-        static void SetImagePixelBackgroundColor(int x, int y, ConsoleColor color) // added in this lesson!
+        static void SetImagePixelBackgroundColor(int x, int y, ConsoleColor color)
         {
             imageData[y * imageWidth + x] = color;
         }
