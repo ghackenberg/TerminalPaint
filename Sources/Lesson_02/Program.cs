@@ -44,7 +44,7 @@
         {
             ClearScreen();
             PaintBorders();
-            UpdateImagePixel(pointerX, pointerY, 'X');
+            UpdateImagePixel(pointerX, pointerY);
         }
 
         static void MainLoop() // revised in this lesson!
@@ -94,7 +94,12 @@
 
         static void MovePointer(int dx, int dy)
         {
-            UpdateImagePixel(pointerX, pointerY, ' ');
+            // Remember previous pointer location
+
+            int previousX = pointerX;
+            int previousY = pointerY;
+
+            // Update current pointer location
 
             if (pointerX + dx >= 0 && pointerX + dx < imageWidth)
             {
@@ -105,7 +110,16 @@
                 pointerY += dy;
             }
 
-            UpdateImagePixel(pointerX, pointerY, 'X');
+            // Update previous pointer location pixel
+
+            if (previousX != pointerX || previousY != pointerY)
+            {
+                UpdateImagePixel(previousX, previousY);
+            }
+
+            // Update current pointer location pixel
+
+            UpdateImagePixel(pointerX, pointerY);
         }
 
         static void Stroke() // added in this lesson!
@@ -114,7 +128,7 @@
 
             SetImagePixelBackgroundColor(pointerX, pointerY, color);
 
-            UpdateImagePixel(pointerX, pointerY, 'X');
+            UpdateImagePixel(pointerX, pointerY);
         }
 
         // - HELPERS
@@ -161,10 +175,12 @@
             }
         }
 
-        static void UpdateImagePixel(int x, int y, char symbol)
+        static void UpdateImagePixel(int x, int y)
         {
             Console.BackgroundColor = GetImagePixelBackgroundColor(x, y);
             Console.ForegroundColor = GetImagePixelForegroundColor(x, y);
+
+            char symbol = GetImagePixelSymbol(x, y);
 
             Console.SetCursorPosition(imageOffsetX + x, imageOffsetY + y);
             Console.Write(symbol);
@@ -183,6 +199,18 @@
         static ConsoleColor GetImagePixelForegroundColor(int x, int y)
         {
             return ConsoleColor.White;
+        }
+
+        static char GetImagePixelSymbol(int x, int y)
+        {
+            if (x == pointerX && y == pointerY)
+            {
+                return 'X';
+            }
+            else
+            {
+                return ' ';
+            }
         }
     }
 }

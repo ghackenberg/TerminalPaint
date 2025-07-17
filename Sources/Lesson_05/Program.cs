@@ -1,15 +1,17 @@
-﻿namespace Lesson_03
+﻿using System.Data;
+
+namespace Lesson_05
 {
     internal class Program
     {
         // FIELDS
 
-        static readonly ConsoleColor[] colors = // added in this lesson!
+        static readonly ConsoleColor[] colors =
         {
             ConsoleColor.Red, ConsoleColor.Green, ConsoleColor.Blue
         };
 
-        static int currentColorIndex = 0; // added in this lesson!
+        static int currentColorIndex = 0;
 
         static readonly int imageOffsetX = 1;
         static readonly int imageOffsetY = 1;
@@ -47,11 +49,11 @@
             }
         }
 
-        static void PaintFrame() // revised in this lesson!
+        static void PaintFrame()
         {
             ClearScreen();
             PaintBorders();
-            PaintColors(); // added in this lesson!
+            PaintColors();
             UpdateImagePixel(pointerX, pointerY);
         }
 
@@ -81,13 +83,21 @@
                 {
                     Stroke();
                 }
-                else if (input.Key == ConsoleKey.PageUp) // added in this lesson!
+                else if (input.Key == ConsoleKey.PageUp)
                 {
                     ChangeColor(-1);
                 }
-                else if (input.Key == ConsoleKey.PageDown) // added in this lesson!
+                else if (input.Key == ConsoleKey.PageDown)
                 {
                     ChangeColor(+1);
+                }
+                else if (input.Key == ConsoleKey.C)
+                {
+                    Clear();
+                }
+                else if (input.Key == ConsoleKey.F)
+                {
+                    Fill();
                 }
                 else if (input.Key == ConsoleKey.Escape)
                 {
@@ -138,16 +148,16 @@
             UpdateImagePixel(pointerX, pointerY);
         }
 
-        static void Stroke() // revised in this lesson!
+        static void Stroke()
         {
-            ConsoleColor color = colors[currentColorIndex]; // revised in this lesson!
+            ConsoleColor color = colors[currentColorIndex];
 
             SetImagePixelBackgroundColor(pointerX, pointerY, color);
 
             UpdateImagePixel(pointerX, pointerY);
         }
 
-        static void ChangeColor(int d) // added in this lesson!
+        static void ChangeColor(int d)
         {
             if (currentColorIndex + d >= 0 && currentColorIndex + d < colors.Length)
             {
@@ -169,6 +179,33 @@
             }
         }
 
+        static void Clear()
+        {
+            for (int y = 0; y < imageHeight; y++)
+            {
+                for (int x = 0; x < imageWidth; x++)
+                {
+                    SetImagePixelBackgroundColor(x, y, ConsoleColor.Black);
+
+                    UpdateImagePixel(x, y);
+                }
+            }
+
+            Console.SetCursorPosition(imageOffsetX + pointerX + 1, imageOffsetY + pointerY);
+        }
+
+        static void Fill()
+        {
+            ConsoleColor originalColor = GetImagePixelBackgroundColor(pointerX, pointerY);
+
+            if (originalColor != colors[currentColorIndex])
+            {
+                FillRecursive(pointerX, pointerY, originalColor);
+
+                Console.SetCursorPosition(imageOffsetX + pointerX + 1, imageOffsetY + pointerY);
+            }
+        }
+
         // - HELPERS
 
         static void ClearScreen()
@@ -179,13 +216,13 @@
             Console.Clear();
         }
 
-        static void PaintBorders() // revised in this lesson!
+        static void PaintBorders()
         {
             PaintHorizontalBorder(0);
             PaintHorizontalBorder(Console.WindowHeight - 1);
 
             PaintVerticalBorder(0);
-            PaintVerticalBorder(Console.WindowWidth - 3); // added in this lesson!
+            PaintVerticalBorder(Console.WindowWidth - 3);
             PaintVerticalBorder(Console.WindowWidth - 1);
         }
 
@@ -213,12 +250,31 @@
                 Console.Write(' ');
             }
         }
-        
-        static void PaintColors() // added in this lesson!
+
+        static void PaintColors()
         {
             for (int colorIndex = 0; colorIndex < colors.Length; colorIndex++)
             {
                 UpdateColorPixel(colorIndex);
+            }
+        }
+
+        static void FillRecursive(int x, int y, ConsoleColor originalColor)
+        {
+            if (x >= 0 && y >= 0 && x < imageWidth && y < imageHeight)
+            {
+                if (GetImagePixelBackgroundColor(x, y) == originalColor)
+                {
+                    SetImagePixelBackgroundColor(x, y, colors[currentColorIndex]);
+
+                    UpdateImagePixel(x, y);
+
+                    FillRecursive(x - 1, y, originalColor);
+                    FillRecursive(x + 1, y, originalColor);
+
+                    FillRecursive(x, y - 1, originalColor);
+                    FillRecursive(x, y + 1, originalColor);
+                }
             }
         }
 
@@ -244,7 +300,7 @@
             Console.Write(symbol);
         }
 
-        static void SetImagePixelBackgroundColor(int x, int y, ConsoleColor color) // added in this lesson!
+        static void SetImagePixelBackgroundColor(int x, int y, ConsoleColor color)
         {
             imageData[y * imageWidth + x] = color;
         }

@@ -52,7 +52,7 @@
             ClearScreen();
             PaintBorders();
             PaintColors();
-            UpdateImagePixel(pointerX, pointerY, 'X');
+            UpdateImagePixel(pointerX, pointerY);
         }
 
         static void MainLoop() // revised in this lesson!
@@ -114,7 +114,12 @@
 
         static void MovePointer(int dx, int dy)
         {
-            UpdateImagePixel(pointerX, pointerY, ' ');
+            // Remember previous pointer location
+
+            int previousX = pointerX;
+            int previousY = pointerY;
+
+            // Update current pointer location
 
             if (pointerX + dx >= 0 && pointerX + dx < imageWidth)
             {
@@ -125,7 +130,16 @@
                 pointerY += dy;
             }
 
-            UpdateImagePixel(pointerX, pointerY, 'X');
+            // Update previous pointer location pixel
+
+            if (previousX != pointerX || previousY != pointerY)
+            {
+                UpdateImagePixel(previousX, previousY);
+            }
+
+            // Update current pointer location pixel
+
+            UpdateImagePixel(pointerX, pointerY);
         }
 
         static void Stroke()
@@ -134,18 +148,28 @@
 
             SetImagePixelBackgroundColor(pointerX, pointerY, color);
 
-            UpdateImagePixel(pointerX, pointerY, 'X');
+            UpdateImagePixel(pointerX, pointerY);
         }
 
         static void ChangeColor(int d)
         {
             if (currentColorIndex + d >= 0 && currentColorIndex + d < colors.Length)
             {
-                UpdateColorPixel(currentColorIndex, ' ');
+                // Remember previous color index
+
+                int previousColorIndex = currentColorIndex;
+
+                // Update current color index
 
                 currentColorIndex += d;
 
-                UpdateColorPixel(currentColorIndex, 'X');
+                // Update previous color pixel
+
+                UpdateColorPixel(previousColorIndex);
+
+                // Update current color pixel
+
+                UpdateColorPixel(currentColorIndex);
             }
         }
 
@@ -157,16 +181,11 @@
                 {
                     SetImagePixelBackgroundColor(x, y, ConsoleColor.Black);
 
-                    if (x == pointerX && y == pointerY)
-                    {
-                        UpdateImagePixel(x, y, 'X');
-                    }
-                    else
-                    {
-                        UpdateImagePixel(x, y, ' ');
-                    }
+                    UpdateImagePixel(x, y);
                 }
             }
+
+            Console.SetCursorPosition(imageOffsetX + pointerX + 1, imageOffsetY + pointerY);
         }
 
         // - HELPERS
@@ -218,30 +237,27 @@
         {
             for (int colorIndex = 0; colorIndex < colors.Length; colorIndex++)
             {
-                if (colorIndex == currentColorIndex)
-                {
-                    UpdateColorPixel(colorIndex, 'X');
-                }
-                else
-                {
-                    UpdateColorPixel(colorIndex, ' ');
-                }
+                UpdateColorPixel(colorIndex);
             }
         }
 
-        static void UpdateImagePixel(int x, int y, char symbol)
+        static void UpdateImagePixel(int x, int y)
         {
             Console.BackgroundColor = GetImagePixelBackgroundColor(x, y);
             Console.ForegroundColor = GetImagePixelForegroundColor(x, y);
+
+            char symbol = GetImagePixelSymbol(x, y);
 
             Console.SetCursorPosition(imageOffsetX + x, imageOffsetY + y);
             Console.Write(symbol);
         }
 
-        static void UpdateColorPixel(int colorIndex, char symbol)
+        static void UpdateColorPixel(int colorIndex)
         {
             Console.BackgroundColor = colors[colorIndex];
             Console.ForegroundColor = ConsoleColor.White;
+
+            char symbol = GetColorPixelSymbol(colorIndex);
 
             Console.SetCursorPosition(Console.WindowWidth - 2, 1 + colorIndex);
             Console.Write(symbol);
@@ -260,6 +276,30 @@
         static ConsoleColor GetImagePixelForegroundColor(int x, int y)
         {
             return ConsoleColor.White;
+        }
+
+        static char GetImagePixelSymbol(int x, int y)
+        {
+            if (x == pointerX && y == pointerY)
+            {
+                return 'X';
+            }
+            else
+            {
+                return ' ';
+            }
+        }
+
+        static char GetColorPixelSymbol(int colorIndex)
+        {
+            if (colorIndex == currentColorIndex)
+            {
+                return 'X';
+            }
+            else
+            {
+                return ' ';
+            }
         }
     }
 }

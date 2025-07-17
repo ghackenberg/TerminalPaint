@@ -26,7 +26,7 @@
         {
             ClearScreen();
             PaintBorders();
-            UpdateImagePixel(pointerX, pointerY, 'X');
+            UpdateImagePixel(pointerX, pointerY);
         }
 
         // - HELPERS
@@ -79,10 +79,12 @@
             Console.ReadKey(true);
         }
 
-        static void UpdateImagePixel(int x, int y, char symbol)
+        static void UpdateImagePixel(int x, int y)
         {
             Console.BackgroundColor = GetImagePixelBackgroundColor(x, y);
             Console.ForegroundColor = GetImagePixelForegroundColor(x, y);
+
+            char symbol = GetImagePixelSymbol(x, y);
 
             Console.SetCursorPosition(imageOffsetX + x, imageOffsetY + y);
             Console.Write(symbol);
@@ -98,6 +100,18 @@
         static ConsoleColor GetImagePixelForegroundColor(int x, int y)
         {
             return ConsoleColor.White;
+        }
+
+        static char GetImagePixelSymbol(int x, int y)
+        {
+            if (x == pointerX && y == pointerY)
+            {
+                return 'X';
+            }
+            else
+            {
+                return ' ';
+            }
         }
     }
 }
